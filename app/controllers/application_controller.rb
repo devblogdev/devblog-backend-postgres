@@ -1,46 +1,55 @@
-class ApplicationController < ActionController::API
-  before_action :authorized
-
-    # This API uses JWT for user authentication
-    # The below 'encode_token' method is used to generate a json web token
-    # It is used in create action of users_controller to create a jwt when a user signs up
-    # It is used in create action of auth_controller to create a jwt when a user logs in
-    # The 'payload' argument is a has with 'user_id' as the key and the user id from the database as the value
-    def encode_token(payload)
-        JWT.encode(payload, "secret")
+class UsersController < ApplicationController
+    before_action :set_user, only: [:show, :update, :destroy]
+    skip_before_action :authorized, only: [:create, :index]
+  
+    def index
+      users = User.all  
+      render json: users
     end
-
-    def author_header
-        # byebug
-        request.headers["Authorization"]
+  
+    def show
+      render json: @user
     end
-
-    def decoded_token
-        if author_header
-            token = author_header.split(" ")[1]
-            begin 
-                JWT.decode(token, "secret", algorithm: 'H2S56')
-            rescue JWT::DecodeError
-                nil
-            end
-        end
+  
+    def profile
+      # render json: UserBlueprint.render(user: current_user)
+      render json: {user: current_user.slice(:username, :email, :first_name, :last_name, :bio)}, status: :accepted
     end
-
-    def current_user
-        if decoded_token
-            user_id = decoded_token[0]['user_id']
-            @user = User.find_by(id: user_id)
-        end
+  
+    # This API uses JSON Web Tokens (JWT) for user authentication; 
+    # This controller action is when users sign up for fist time to app's frontend
+    # A json web token is created and passes to the client side (the frontend)
+    def create
+      @user = User.new(user_params)
+      if @user.save
+        @token = encode_token(user_id: @user.id)
+        render json: {user: @user, jwt: @token}, status: :created
+      else
+        render json: { error: 'failed to create user' }, status: :not_acceptable
+      end
     end
-
-    def logged_in?
-        !!current_user
+  
+    def update
+      if @user.update(user_params)
+        render json: @user
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
     end
-
-    def authorized
-        render json: {message: 'Please log in '}, status: :unauthorized unless logged_in?
+  
+    def destroy
+      @user.destroy
     end
-
-end
+  
+    private
     
-
+      def set_user
+        @user = User.find(params[:id])
+      end
+  
+      # Only allow a list of trusted parameters through.
+      def user_params
+        params.require(:user).permit(:username, :email, :password, :bio, :avatar)
+      end
+  end
+  
