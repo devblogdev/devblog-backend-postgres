@@ -1,30 +1,36 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  skip_before_action :authorized, only: [:create, :index]
 
-  # GET /users
+  
   def index
-    @users = User.all
-
-    render json: @users
+    users = User.all
+    render json: users
   end
 
-  # GET /users/1
   def show
     render json: @user
   end
 
-  # POST /users
+  def profile
+    # byebug
+    # render json: UserBlueprint.render(user: current_user)
+    render json: {user: current_user.slice(:username, :email, :first_name, :last_name, :bio)}, status: :accepted
+  end
+
+  # This API uses Json Web Tokens (JWT) for user authentication; 
+  # This controller action is when users sign up for fist time to app's frontend
+  # A json web token is created and passes to the client side (the frontend)
   def create
     @user = User.new(user_params)
-
     if @user.save
-      render json: @user, status: :created, location: @user
+      @token = encode_token(user_id: @user.id)
+      render json: {user: @user, jwt: @token}, status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: { error: 'failed to create user' }, status: :not_acceptable
     end
   end
 
-  # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
       render json: @user
@@ -33,19 +39,18 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
   def destroy
     @user.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+  
     def set_user
       @user = User.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:email, :password_digest, :first_name, :last_name, :bio)
+      params.require(:user).permit(:username, :email, :password, :bio, :avatar)
     end
 end
