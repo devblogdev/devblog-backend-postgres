@@ -21,7 +21,9 @@ class UsersController < ApplicationController
   # This controller action is when users sign up for fist time to app's frontend
   # A json web token is created and passes to the client side (the frontend)
   def create
+    # byebug
     @user = User.new(user_params)
+    # byebug
     if @user.save
       @token = encode_token(user_id: @user.id)
       render json: {user: @user, jwt: @token}, status: :created
@@ -43,13 +45,12 @@ class UsersController < ApplicationController
   end
 
   private
-  
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:username, :email, :password, :bio, :avatar)
-    end
+  # Only allow a list of trusted parameters through.
+  def user_params
+    params.require(:user).permit(:email, :password, :first_name, :last_name, :username, :bio, :avatar)
+  end
 end
