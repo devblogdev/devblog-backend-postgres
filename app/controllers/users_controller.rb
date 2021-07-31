@@ -12,8 +12,6 @@ class UsersController < ApplicationController
   end
 
   def profile
-    api = "#{ENV['GUARDIAN_API_KEY']}"
-    # byebug
     # render json: UserBlueprint.render(user: current_user)
     render json: {user: current_user.slice(:email, :first_name, :last_name, :bio)}, status: :accepted
   end
@@ -22,9 +20,7 @@ class UsersController < ApplicationController
   # This controller action is when users sign up for fist time to app's frontend
   # A json web token is created and passes to the client side (the frontend)
   def create
-    # byebug
     @user = User.new(user_params)
-    # byebug
     if @user.save
       @token = encode_token(user_id: @user.id)
       render json: {user: @user, jwt: @token}, status: :created
