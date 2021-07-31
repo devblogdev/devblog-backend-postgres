@@ -12,9 +12,10 @@ class UsersController < ApplicationController
   end
 
   def profile
+    api = "#{ENV['GUARDIAN_API_KEY']}"
     # byebug
     # render json: UserBlueprint.render(user: current_user)
-    render json: {user: current_user.slice(:username, :email, :first_name, :last_name, :bio)}, status: :accepted
+    render json: {user: current_user.slice(:email, :first_name, :last_name, :bio)}, status: :accepted
   end
 
   # This API uses Json Web Tokens (JWT) for user authentication; 
