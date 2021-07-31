@@ -21,6 +21,7 @@ gem 'figaro'
 gem 'jwt'
 gem 'rack-cors'
 gem 'blueprinter'
+gem 'httparty'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

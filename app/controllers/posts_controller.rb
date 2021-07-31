@@ -1,11 +1,22 @@
+
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
+  skip_before_action :authorized, only: [:index]
 
   # GET /posts
   def index
-    @posts = Post.all
-
-    render json: @posts
+    # byebug
+    # @posts = GuardianApi.new(search)
+    # begin
+      # @posts = HTTParty.get("https://content.guardianapis.com/search?section=technology&api-key=#EV[GUARIDAN_API_KEY]")
+      # @posts = GuardianApi.new.fetchPosts
+      
+      # @posts = NewYorkTimes.new.fetchPosts
+      @posts = NewYorkTimes.new.section("world")
+    # rescue 
+      # render json: "THERE WAS AN ERROR"
+    # end
+      render json: @posts
   end
 
   # GET /posts/1
