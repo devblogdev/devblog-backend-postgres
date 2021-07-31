@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     # rescue 
       # render json: "THERE WAS AN ERROR"
     # else
-      render json: @posts
+      render json: PostBlueprint.render(@posts, view: :extended)
     # end
   end
 
