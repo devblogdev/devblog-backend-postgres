@@ -5,12 +5,13 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    begin      
+    # begin      
       @posts = NewYorkTimes.new.section("world")
-    rescue 
-      render json: "THERE WAS AN ERROR"
-    end
+    # rescue 
+      # render json: "THERE WAS AN ERROR"
+    # else
       render json: @posts
+    # end
   end
 
   # GET /posts/1

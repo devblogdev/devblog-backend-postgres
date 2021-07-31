@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_184447) do
     t.string "title"
     t.integer "coming_from", default: 0
     t.text "body"
-    t.string "cateogory"
+    t.string "category"
     t.text "abstract"
     t.text "url"
     t.integer "user_id", null: false

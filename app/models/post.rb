@@ -8,7 +8,8 @@ class Post < ApplicationRecord
 
   def self.build_NYTIMES_post(post_hash)
     post = Post.new
-    post.coming_from = "NYTIMES"
+    byebug
+    post.coming_from= "NYTIMES"
     post.title = post_hash["title"]
     post.category = post_hash["section"]
     post.abstract = post_hash["abstract"]
