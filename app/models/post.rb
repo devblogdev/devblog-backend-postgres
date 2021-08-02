@@ -15,7 +15,7 @@ class Post < ApplicationRecord
     post.abstract = post_hash["abstract"]
     post.url = post_hash["url"]
     image = Image.new(
-      url: post_hash["multimedia"][0]["url"],
+      url: post_hash["multimedia"][3]["url"],
       caption: post_hash["multimedia"][0]["caption"],
       alt: post_hash["multimedia"][0]["caption"],
       format: post_hash["multimedia"][0]["format"]

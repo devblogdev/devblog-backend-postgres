@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     # begin      
-      @posts = NewYorkTimes.new.section("world")
+      @posts = NewYorkTimes.new.section("world").take(3)
     # rescue 
       # render json: "THERE WAS AN ERROR"
     # else
@@ -22,7 +22,8 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
-
+    @post.user_id = current_user.id
+    # byebug
     if @post.save
       render json: @post, status: :created, location: @post
     else
@@ -52,6 +53,6 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :user_id)
+      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id)
     end
 end
