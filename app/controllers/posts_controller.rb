@@ -37,7 +37,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   def update
     if @post.update(post_params)
-      render json: @post
+      render json: PostBlueprint.render(@post, view: :extended)
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -45,7 +45,11 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
-    @post.destroy
+    # Note: destroy method deletes the given object and all other objects that depend on the given object;
+    # example: calling destroy on a post with associated comments will delete the post and the comments
+    if @post.destroy
+      render json: "Post #{@post.id} successfully deleted"
+    end
   end
 
   private
