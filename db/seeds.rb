@@ -3017,7 +3017,7 @@ def testingDatabase(data)
     all_posts << Post.build_NYTIMES_post(post_hash)
   end
   all_posts
-  byebug
+  # byebug
   puts "Complete"
 end
 

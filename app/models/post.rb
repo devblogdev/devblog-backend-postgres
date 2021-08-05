@@ -4,12 +4,12 @@ class Post < ApplicationRecord
   has_and_belongs_to_many :images
 
   enum coming_from: [:database, :NYTIMES]
-
+  enum status: [:draft, :published]
 
   def self.build_NYTIMES_post(post_hash)
+    require 'json'
     post = Post.new
-    # byebug
-    post.coming_from= "NYTIMES"
+    post.coming_from = "NYTIMES"
     post.title = post_hash["title"]
     post.category = post_hash["section"]
     post.abstract = post_hash["abstract"]
@@ -21,7 +21,7 @@ class Post < ApplicationRecord
       format: post_hash["multimedia"][0]["format"]
     )
     post.images << image
-    post
+   post
   end
 
 

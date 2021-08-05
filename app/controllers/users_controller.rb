@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def profile
     # render json: UserBlueprint.render(user: current_user)
-    render json: {user: current_user.slice(:email, :first_name, :last_name, :bio)}, status: :accepted
+    render json: UserBlueprint.render(current_user, view: :extended)
   end
 
   # This API uses Json Web Tokens (JWT) for user authentication; 

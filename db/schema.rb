@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_184447) do
     t.string "category"
     t.text "abstract"
     t.text "url"
+    t.integer "status", default: 0
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

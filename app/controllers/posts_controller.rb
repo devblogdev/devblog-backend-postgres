@@ -5,13 +5,16 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    # begin      
-      @posts = NewYorkTimes.new.section("world").take(3)
-    # rescue 
-      # render json: "THERE WAS AN ERROR"
-    # else
-      render json: PostBlueprint.render(@posts, view: :extended)
-    # end
+    database_posts = Post.where(status: :published).order(created_at: :desc)
+    # byebug
+    begin      
+      new_york_times_posts = NewYorkTimes.new.section("world")
+    rescue 
+      render json: PostBlueprint.render(database_posts, view: :extended)
+    else
+      posts = new_york_times_posts.concat(database_posts)
+      render json: PostBlueprint.render(posts, view: :extended)
+    end
   end
 
   # GET /posts/1
@@ -53,6 +56,6 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id)
+      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id, :status)
     end
 end
