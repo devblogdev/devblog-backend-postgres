@@ -6,7 +6,6 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     database_posts = Post.where(status: :published).order(created_at: :desc)
-    # byebug
     begin      
       new_york_times_posts = NewYorkTimes.new.section("world")
     rescue 
@@ -26,9 +25,8 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.user_id = current_user.id
-    # byebug
     if @post.save
-      render json: @post, status: :created, location: @post
+      render json: PostBlueprint.render(@post, view: :extended)
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -36,8 +34,22 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
-      render json: PostBlueprint.render(@post, view: :extended)
+    # byebug
+    if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], url: post_params[:url], status: post_params[:status])
+      if @post.images[0] && post_params[:images_attributes].empty?
+        @post.images[0].delete
+        @post.images = []
+        render json: PostBlueprint.render(@post, view: :extended)
+      elsif @post.images[0] && !post_params[:images_attributes].empty?
+        @post.images[0].update(post_params[:images_attributes][0])
+        render json: PostBlueprint.render(@post, view: :extended)
+      elsif @post.images.empty? && !post_params[:images_attributes].empty?
+        new_image = Image.create(post_params[:images_attributes][0])
+        @post.images << new_image
+        render json: PostBlueprint.render(@post, view: :extended)
+      else
+        render json: PostBlueprint.render(@post, view: :extended)
+      end
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -45,9 +57,12 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
-    # Note: destroy method deletes the given object and all other objects that depend on the given object;
-    # example: calling destroy on a post with associated comments will delete the post and the comments
-    if @post.destroy
+    if @post.images.empty?
+      @post.destroy
+      render json: "Post #{@post.id} successfully deleted"
+    else
+      @post.images[0].delete
+      @post.destroy
       render json: "Post #{@post.id} successfully deleted"
     end
   end
@@ -60,6 +75,8 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id, :status)
+      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id, :status, :id,
+        images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
+      )
     end
 end

@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 2021_07_31_184447) do
     t.string "caption"
     t.string "alt"
     t.string "format"
+    t.string "name"
+    t.integer "size"
+    t.string "s3key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

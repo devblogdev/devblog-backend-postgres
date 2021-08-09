@@ -1,7 +1,8 @@
 class Post < ApplicationRecord
   belongs_to :user
   has_many :comments
-  has_and_belongs_to_many :images
+  has_and_belongs_to_many :images, dependent: :destroy
+  accepts_nested_attributes_for :images
 
   enum coming_from: [:database, :NYTIMES]
   enum status: [:draft, :published]

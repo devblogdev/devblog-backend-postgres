@@ -3,6 +3,6 @@ class UserBlueprint < Blueprinter::Base
     fields :first_name, :last_name, :email, :bio
   
     view :extended do
-      association :posts, blueprint: PostBlueprint
+      association :posts, blueprint: PostBlueprint, view: :extended
     end
 end
