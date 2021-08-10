@@ -41,6 +41,7 @@ class PostsController < ApplicationController
         @post.images = []
         render json: PostBlueprint.render(@post, view: :extended)
       elsif @post.images[0] && !post_params[:images_attributes].empty?
+        # byebug
         @post.images[0].update(post_params[:images_attributes][0])
         render json: PostBlueprint.render(@post, view: :extended)
       elsif @post.images.empty? && !post_params[:images_attributes].empty?
