@@ -2,12 +2,12 @@ class CreateImages < ActiveRecord::Migration[6.1]
   def change
     create_table :images do |t|
       t.text :url
-      t.string :caption
-      t.string :alt
-      t.string :format
-      t.string :name
+      t.text :caption
+      t.text :alt
+      t.text :format
+      t.text :name
       t.integer :size
-      t.string :s3key
+      t.text :s3key
 
       t.timestamps
     end

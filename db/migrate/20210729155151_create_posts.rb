@@ -1,10 +1,10 @@
 class CreatePosts < ActiveRecord::Migration[6.1]
     def change
       create_table :posts do |t|
-        t.string :title
+        t.text :title
         t.integer :coming_from, default: 0
         t.text :body
-        t.string :category
+        t.text :category
         t.text :abstract
         t.text :url
         t.integer :status, default: 0

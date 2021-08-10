@@ -12,10 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2021_07_31_184447) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "comments", force: :cascade do |t|
     t.text "description"
-    t.integer "user_id", null: false
-    t.integer "post_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
@@ -24,42 +27,42 @@ ActiveRecord::Schema.define(version: 2021_07_31_184447) do
 
   create_table "images", force: :cascade do |t|
     t.text "url"
-    t.string "caption"
-    t.string "alt"
-    t.string "format"
-    t.string "name"
+    t.text "caption"
+    t.text "alt"
+    t.text "format"
+    t.text "name"
     t.integer "size"
-    t.string "s3key"
+    t.text "s3key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "images_posts", id: false, force: :cascade do |t|
-    t.integer "post_id", null: false
-    t.integer "image_id", null: false
+    t.bigint "post_id", null: false
+    t.bigint "image_id", null: false
     t.index ["image_id", "post_id"], name: "index_images_posts_on_image_id_and_post_id"
     t.index ["post_id", "image_id"], name: "index_images_posts_on_post_id_and_image_id"
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "title"
+    t.text "title"
     t.integer "coming_from", default: 0
     t.text "body"
-    t.string "category"
+    t.text "category"
     t.text "abstract"
     t.text "url"
     t.integer "status", default: 0
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "password_digest"
-    t.string "first_name"
-    t.string "last_name"
+    t.text "email"
+    t.text "password_digest"
+    t.text "first_name"
+    t.text "last_name"
     t.text "bio"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
