@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
+  root "posts#index"
   get '/profile', to: 'users#profile'
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
