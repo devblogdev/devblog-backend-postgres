@@ -26,11 +26,13 @@ module DevblogBackend
     
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
+        # origins '*'
+        origins ENV['FRONT_END_URL']
         resource '*',
           :headers => :any,
-          :methods => [:get, :post, :delete, :put, :patch, :options, :head],
-          :max_age => 0
+          :methods => [:get, :post, :delete, :put, :patch, :options, :head]
+          # :max_age => 0 ,
+          # credentials: true
       end
     end
 
