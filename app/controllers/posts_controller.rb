@@ -7,11 +7,12 @@ class PostsController < ApplicationController
   def index
     database_posts = Post.where(status: :published).order(created_at: :desc)
     begin      
-      new_york_times_posts = NewYorkTimes.new.section("world")
+      new_york_times_posts = NewYorkTimes.new.section("world").take(25)
     rescue 
       render json: PostBlueprint.render(database_posts, view: :extended)
     else
-      posts = new_york_times_posts.concat(database_posts)
+      # byebug
+      posts = database_posts + new_york_times_posts
       render json: PostBlueprint.render(posts, view: :extended)
     end
   end
