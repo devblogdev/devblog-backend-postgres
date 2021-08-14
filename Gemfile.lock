@@ -156,6 +156,9 @@ GEM
     thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    valid_email2 (4.0.0)
+      activemodel (>= 3.2)
+      mail (~> 2.5)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -181,6 +184,7 @@ DEPENDENCIES
   rails (~> 6.1.4)
   spring
   tzinfo-data
+  valid_email2
 
 RUBY VERSION
    ruby 3.0.1p64

@@ -22,6 +22,7 @@ gem 'jwt'
 gem 'rack-cors'
 gem 'blueprinter'
 gem 'httparty'
+gem 'valid_email2'
 
 
 # Use Active Storage variant
