@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   # A json web token is created and passes to the client side (the frontend)
   def create
     @user = User.new(user_params)
+    # byebug
     if @user.save
       @token = encode_token(user_id: @user.id)
       render json: {user: @user, jwt: @token}, status: :created
