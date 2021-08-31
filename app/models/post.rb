@@ -25,6 +25,12 @@ class Post < ApplicationRecord
    post
   end
 
+  def creation_time
+    if self.coming_from == "database"
+      self.created_at.strftime('%B %d, %Y')
+    end
+  end
+
 
 
 
