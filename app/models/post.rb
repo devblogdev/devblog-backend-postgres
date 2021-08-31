@@ -27,7 +27,7 @@ class Post < ApplicationRecord
 
   def creation_time
     if self.coming_from == "database"
-      self.created_at.strftime('%B %d, %Y')
+      self.created_at.strftime('%b %d, %Y')
     end
   end
 
