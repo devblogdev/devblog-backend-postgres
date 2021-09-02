@@ -8,4 +8,7 @@ class User < ApplicationRecord
 
     before_validation { self.email = email.downcase }
 
+    scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1)}
+    # scope :has_published_posts, -> { joins(:posts).where("posts.status = ?", 1).distinct}
+
 end
