@@ -5,7 +5,8 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    database_posts = Post.where(status: :published).order(created_at: :desc)
+    # database_posts = Post.where(status: :published).order(created_at: :desc)
+    database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
     begin      
       new_york_times_posts = NewYorkTimes.new.section("world").take(25)
     rescue 
