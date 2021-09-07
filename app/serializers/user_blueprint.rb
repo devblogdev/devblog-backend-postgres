@@ -1,8 +1,15 @@
 class UserBlueprint < Blueprinter::Base
     identifier :id
-    fields :first_name, :last_name, :email, :bio
+    fields :first_name, :last_name, :bio
+
+    # view :extended do
+    #   association :images, blueprint: ImageBlueprint
+    # end
   
-    view :extended do
+    view :private do
+      fields :email
       association :posts, blueprint: PostBlueprint, view: :extended
+      # association :images, blueprint: ImageBlueprint
     end
+
 end

@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 
   def index
     users = User.has_published_posts
-    render json: UserBlueprint.render(users)
+    render json: UserBlueprint.render(users, view: :private)
+    # render json: UserBlueprint.render(users, view: :extended)
   end
 
   def show
@@ -13,7 +14,7 @@ class UsersController < ApplicationController
 
   def profile
     # render json: UserBlueprint.render(user: current_user)
-    render json: UserBlueprint.render(current_user, view: :extended)
+    render json: UserBlueprint.render(current_user, view: :private)
   end
 
   # This API uses Json Web Tokens (JWT) for user authentication; 
@@ -30,11 +31,33 @@ class UsersController < ApplicationController
   end
 
   def update
+    # # byebug
     if @user.update(user_params)
-      render json: @user
+      render json: UserBlueprint.render(@user, view: :private)
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+        # byebug
+    # if @user.update( private: user_params[:private] )
+    #   if @user.images[0] && user_params[:images_attributes].empty?
+    #     # byebug
+    #     @user.images[0].destroy
+    #     # @user.images = []
+    #     render json: UserBlueprint.render(@user, view: :private)
+    #   elsif @user.images[0] && !user_params[:images_attributes].empty?
+    #     # byebug
+    #     @user.images[0].update(user_params[:images_attributes][0])
+    #     render json: UserBlueprint.render(@user, view: :private)
+    #   elsif @user.images.empty? && !user_params[:images_attributes].empty?
+    #     new_image = Image.create(user_params[:images_attributes][0])
+    #     @user.images << new_image
+    #     render json: UserBlueprint.render(@user, view: :private)
+    #   else
+    #     render json: UserBlueprint.render(@user, view: :private)
+    #   end
+    # else
+    #   render json: @user.errors, status: :unprocessable_entity
+    # end
   end
 
   def destroy
@@ -48,8 +71,8 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :username, :bio, :avatar,
-      images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id, :user_ids]
+    params.require(:user).permit(:email, :password, :first_name, :last_name, :bio => {}
+    # ,images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
     )
   end
 end

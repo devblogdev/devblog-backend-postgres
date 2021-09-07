@@ -1,7 +1,12 @@
 class Post < ApplicationRecord
   belongs_to :user
-  has_many :comments
-  has_and_belongs_to_many :images, dependent: :destroy, join_table: 'images_posts'
+  has_many :comments, dependent: :destroy
+  has_many :images, dependent: :destroy
+  # has_and_belongs_to_many :images, dependent: :destroy, join_table: 'images_posts'
+  
+  # has_many :post_images, dependent: :destroy
+  # has_many :images, through: :post_images, dependent: :destroy
+
   accepts_nested_attributes_for :images
 
   enum coming_from: [:database, :NYTIMES]

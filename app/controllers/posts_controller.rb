@@ -60,14 +60,19 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
-    if @post.images.empty?
-      @post.destroy
+    if @post.destroy
       render json: "Post #{@post.id} successfully deleted"
     else
-      @post.images[0].delete
-      @post.destroy
-      render json: "Post #{@post.id} successfully deleted"
+      render json: @post.errors, status: unprocessable_entity
     end
+    # if @post.images.empty?
+    #   @post.destroy
+    #   render json: "Post #{@post.id} successfully deleted"
+    # else
+    #   @post.images[0].delete
+    #   @post.destroy
+    #   render json: "Post #{@post.id} successfully deleted"
+    # end
   end
 
   private

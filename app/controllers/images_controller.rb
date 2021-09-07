@@ -3,8 +3,10 @@ class ImagesController < ApplicationController
   
   # GET /images
   def index
-    profile_pictures = Image.joins(:users)
-    render json: ImageBlueprint.render(profile_pictures, view: :extended)
+    # profile_pictures = Image.joins(:users)
+    profile_pictures = Image.all
+    render json: ImageBlueprint.render(profile_pictures)
+    # render json: ImageBlueprint.render(profile_pictures, view: :extended)
   end
       
   private 
