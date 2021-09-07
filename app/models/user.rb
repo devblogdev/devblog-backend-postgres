@@ -7,7 +7,10 @@ class User < ApplicationRecord
     # has_many :user_images, dependent: :destroy
     # has_many :images, through: :user_images
 
-    # accepts_nested_attributes_for :images
+    # Warning: changing the alias name 'images' will break the client-side code which relies on 'user.images' and not on 'user.user_images'
+    has_many :images, foreign_key: "user_id", class_name: "UserImage", dependent: :destroy
+
+    accepts_nested_attributes_for :images
 
   
 

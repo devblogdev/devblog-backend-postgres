@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_07_212627) do
+ActiveRecord::Schema.define(version: 2021_09_07_223307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,20 @@ ActiveRecord::Schema.define(version: 2021_09_07_212627) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "user_images", force: :cascade do |t|
+    t.text "url"
+    t.text "caption"
+    t.text "alt"
+    t.text "format"
+    t.text "name"
+    t.integer "size"
+    t.text "s3key"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_images_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.text "email"
     t.text "password_digest"
@@ -67,4 +81,5 @@ ActiveRecord::Schema.define(version: 2021_09_07_212627) do
   add_foreign_key "comments", "users"
   add_foreign_key "images", "posts"
   add_foreign_key "posts", "users"
+  add_foreign_key "user_images", "users"
 end
