@@ -33,11 +33,13 @@ class UsersController < ApplicationController
 
   def update
     # # byebug
+
     if @user.update(user_params)
       render json: UserBlueprint.render(@user, view: :private)
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+
         # byebug
     # if @user.update( private: user_params[:private] )
     #   if @user.images[0] && user_params[:images_attributes].empty?
