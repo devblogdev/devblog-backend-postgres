@@ -7,7 +7,7 @@ class UserBlueprint < Blueprinter::Base
     end
   
     view :private do
-      fields :email, :password
+      fields :email
       association :posts, blueprint: PostBlueprint, view: :extended
       association :images, blueprint: UserImageBlueprint
     end

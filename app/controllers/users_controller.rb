@@ -3,10 +3,8 @@ class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create, :index]
 
   def index
-    # users = User.has_published_posts
-    users = User.all
-    render json: UserBlueprint.render(users, view: :private)
-    # render json: UserBlueprint.render(users, view: :extended)
+    users = User.has_published_posts
+    render json: UserBlueprint.render(users, view: :extended)
   end
 
   def show
@@ -33,18 +31,11 @@ class UsersController < ApplicationController
 
   def update
     # # byebug
-    if @user.update(bio: "{}")
-    # if  @user.update(user_params)
+    if @user.update(user_params)
       render json: UserBlueprint.render(@user, view: :private)
-    else 
+    else
       render json: @user.errors, status: :unprocessable_entity
     end
-  end
-    # if @user.update(user_params)
-    #   render json: UserBlueprint.render(@user, view: :private)
-    # else
-    #   render json: @user.errors, status: :unprocessable_entity
-    # end
 
         # byebug
     # if @user.update( private: user_params[:private] )
@@ -67,7 +58,7 @@ class UsersController < ApplicationController
     # else
     #   render json: @user.errors, status: :unprocessable_entity
     # end
-  # end
+  end
 
   def destroy
     @user.destroy
@@ -80,7 +71,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :bio,
+    params.require(:user).permit(:email, :password, :first_name, :last_name, :bio => {},
       images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
     )
   end
