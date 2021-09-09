@@ -12,7 +12,6 @@ class UsersController < ApplicationController
   end
 
   def profile
-    # render json: UserBlueprint.render(user: current_user)
     render json: UserBlueprint.render(current_user, view: :private)
   end
 
@@ -30,21 +29,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    # # byebug
-    # if @user.update(user_params)
-    #   render json: UserBlueprint.render(@user, view: :private)
-    # else
-    #   render json: @user.errors, status: :unprocessable_entity
-    # end
-    # byebug
     if @user.update( bio: user_params[:bio] )
       if @user.images[0] && user_params[:images_attributes].empty?
-        # byebug
         # @user.images[0].destroy
         @user.images = []
         render json: UserBlueprint.render(@user, view: :private)
       elsif @user.images[0] && !user_params[:images_attributes].empty?
-        # byebug
         @user.images[0].update(user_params[:images_attributes][0])
         render json: UserBlueprint.render(@user, view: :private)
       elsif @user.images.empty? && !user_params[:images_attributes].empty?

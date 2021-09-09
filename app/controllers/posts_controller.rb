@@ -39,7 +39,7 @@ class PostsController < ApplicationController
     # byebug
     if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], url: post_params[:url], status: post_params[:status])
       if @post.images[0] && post_params[:images_attributes].empty?
-        @post.images[0].delete
+        # @post.images[0].delete
         @post.images = []
         render json: PostBlueprint.render(@post, view: :extended)
       elsif @post.images[0] && !post_params[:images_attributes].empty?
