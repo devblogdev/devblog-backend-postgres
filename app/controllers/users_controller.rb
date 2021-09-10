@@ -30,13 +30,6 @@ class UsersController < ApplicationController
 
   def update
     if @user.update( bio: user_params[:bio] )
-          # TEMPORARY-FIXING A POST THAT HAS NO TITLE
-          new_user = User.find(2)
-          post = new_user.posts.where(status: :published)[0]
-          post.title = "Omniauth Authentication with Google"
-          post.abstract = "I have downloaded so many apps that give me the option to login using facebook. I never really gave it much thought, all I knew is that it made my life a little simpler …"
-          post.save
-          # TEMPORARY
       if @user.images[0] && user_params[:images_attributes].empty?
         # @user.images[0].destroy
         @user.images = []
