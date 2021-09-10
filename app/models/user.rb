@@ -14,6 +14,9 @@ class User < ApplicationRecord
 
     
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
-  
+    
+    def full_name
+     "#{self.first_name}" + " #{self.last_name}"
+    end
   
 end

@@ -27,6 +27,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.user_id = current_user.id
+    @post.author_name = current_user.full_name
     if @post.save
       render json: PostBlueprint.render(@post, view: :extended)
     else
@@ -84,7 +85,7 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id, :status, :id,
+      params.require(:post).permit(:title, :body, :category, :coming_from, :abstract, :url, :user_id, :status, :id, :author_name,
         images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
       )
     end
