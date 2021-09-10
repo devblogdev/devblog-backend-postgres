@@ -5,4 +5,5 @@ class PostBlueprint < Blueprinter::Base
     view :extended do
       association :images, blueprint: ImageBlueprint
     end
+    
   end

@@ -1,11 +1,21 @@
 class Post < ApplicationRecord
   belongs_to :user
+  belongs_to :author, class_name: "User", foreign_key: "user_id"
+
   has_many :comments, dependent: :destroy
   has_many :images, dependent: :destroy
   accepts_nested_attributes_for :images
 
   enum coming_from: [:database, :NYTIMES]
   enum status: [:draft, :published]
+
+  def creation_time
+    if self.coming_from == "database"
+      self.created_at.strftime('%b %-d, %Y')
+    else
+      Date.today.strftime('%b %-d, %Y')
+    end
+  end
 
   def self.build_NYTIMES_post(post_hash)
     require 'json'
@@ -24,14 +34,6 @@ class Post < ApplicationRecord
     post.images << image
    post
   end
-
-  def creation_time
-    if self.coming_from == "database"
-      self.created_at.strftime('%b %d, %Y')
-    end
-  end
-
-
 
 
 end

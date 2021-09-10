@@ -3,6 +3,7 @@ class UserBlueprint < Blueprinter::Base
     fields :first_name, :last_name, :bio
 
     view :extended do
+      # fields :first_name, :last_name, :bio
       association :images, blueprint: UserImageBlueprint
     end
   

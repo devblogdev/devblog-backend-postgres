@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create, :index]
 
   def index
-    users = User.has_published_posts
+    users = User.has_published_posts.includes(:images)
     render json: UserBlueprint.render(users, view: :extended)
   end
 

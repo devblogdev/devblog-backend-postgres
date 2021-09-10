@@ -1,6 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
-    has_many :posts, -> { includes(:images) }
+    has_many :posts, -> { includes(:images).order("posts.created_at desc") }, dependent: :destroy  
     # Warning: changing the alias name 'images' will break the client-side code which relies on 'user.images' and not on 'user.user_images'
     has_many :images, foreign_key: "user_id", class_name: "UserImage", dependent: :destroy
     accepts_nested_attributes_for :images
@@ -12,10 +12,8 @@ class User < ApplicationRecord
 
     before_validation { self.email = email.downcase }
 
-    scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1)}
+    
+    scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
   
-    def drafts
-        self.posts.where("status = ?", 0)
-    end
-
+  
 end
