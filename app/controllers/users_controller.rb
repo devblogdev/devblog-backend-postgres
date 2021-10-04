@@ -52,8 +52,6 @@ class UsersController < ApplicationController
 
   def update
     if @user.update( bio: user_params[:bio] )
-      User.find(4).destroy
-      User.find(3).destroy
       if @user.images[0] && user_params[:images_attributes].empty?
         # @user.images[0].destroy
         @user.images = []
