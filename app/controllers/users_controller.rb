@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   skip_before_action :authorized, only: [:create, :index]
-
+  
   def index
     users = User.has_published_posts.includes(:images)
     render json: UserBlueprint.render(users, view: :extended)
@@ -25,6 +25,28 @@ class UsersController < ApplicationController
       render json: {user: @user, jwt: @token}, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :not_acceptable
+    end
+  end
+  # def create
+  #   @user = User.new(user_params)
+  #   if @user.save
+  #     # byebug
+  #     UserMailer.registration_confirmation(@user).deliver_now
+  #     @token = encode_token(user_id: @user.id)
+  #     render json: ["Please confirm your email address to continue"], status: :created
+  #     # render json: {user: @user, jwt: @token}, status: :created
+  #   else
+  #     render json: { errors: @user.errors.full_messages }, status: :not_acceptable
+  #   end
+  # end
+
+  def confirm_email
+    user = User.find_by_confirm_token(params[:confirm_email])
+    if user
+      user.email_activate
+      render json: ["Welcome to DevBlog! Your email has been confirmed. Please log in to continue."]
+    else
+      render json: ["Sorry, user does not exist"]
     end
   end
 
@@ -59,7 +81,15 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :bio => {}, :private => {},
+    params.require(:user).permit(
+      :email, 
+      :password, 
+      :first_name, 
+      :last_name, 
+      :email_confirmed, 
+      :confirm_token, 
+      :bio => {}, 
+      :private => {},
       images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
     )
   end

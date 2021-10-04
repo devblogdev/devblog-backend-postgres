@@ -11,6 +11,7 @@ class User < ApplicationRecord
     validates :email, uniqueness: true, on: :create
 
     before_validation { self.email = email.downcase }
+    # before_create :confirmation_token
 
     
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
@@ -18,5 +19,24 @@ class User < ApplicationRecord
     def full_name
      "#{self.first_name}" + " #{self.last_name}"
     end
-  
+
+    def confirmation_token
+        if self.confirm_token.blank?
+            self.confirm_token = SecureRandom.urlsafe_base64.to_s
+        end
+    end
+
+    private
+    def confirmation_token
+        if self.confirm_token.blank?
+            self.confirm_token = SecureRandom.urlsafe_base64.to_s
+        end
+    end
+
+    def email_activate
+        self.email_confirmed = true
+        self.confirm_token = nil
+        save!(:validate => false)
+    end
+
 end

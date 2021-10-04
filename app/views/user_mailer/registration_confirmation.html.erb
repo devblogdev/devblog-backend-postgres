@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  
+    <p>Hi <%= @user.first_name %>,</p>
+    <p>Thanks for registering at DevBlog! To confirm your registration, click the URL below.</p>
+    <%= link_to "Activate Account", "/luisdevblog/registration-confirmation/#{@user.confirm_token}" %>
+  </body>
+</html>
