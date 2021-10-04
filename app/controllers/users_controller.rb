@@ -51,10 +51,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update( bio: user_params[:bio] )
-      @user.posts.each do |post|
-        post.update(author_name: @user.full_name)
-      end        
+    if @user.update( bio: user_params[:bio] )      
       if @user.images[0] && user_params[:images_attributes].empty?
         # @user.images[0].destroy
         @user.images = []
