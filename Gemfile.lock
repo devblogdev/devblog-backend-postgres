@@ -107,6 +107,9 @@ GEM
     nokogiri (1.12.3-x86_64-linux)
       racc (~> 1.4)
     pg (1.2.3)
+    prerender_rails (1.7.0)
+      activesupport
+      rack (~> 2.2.2)
     puma (5.4.0)
       nio4r (~> 2.0)
     racc (1.5.2)
@@ -179,6 +182,7 @@ DEPENDENCIES
   jwt
   listen (~> 3.3)
   pg
+  prerender_rails
   puma (~> 5.0)
   rack-cors
   rails (~> 6.1.4)

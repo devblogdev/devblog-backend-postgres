@@ -23,6 +23,8 @@ gem 'rack-cors'
 gem 'blueprinter'
 gem 'httparty'
 gem 'valid_email2'
+# prerender is used to serve a cached version of the requested page to search engine bots
+gem 'prerender_rails'
 
 
 # Use Active Storage variant
