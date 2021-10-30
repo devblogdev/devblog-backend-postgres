@@ -25,4 +25,6 @@ Rails.application.routes.draw do
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
   
+
+  get "/index.html", to: 'users#prerender_service'
 end

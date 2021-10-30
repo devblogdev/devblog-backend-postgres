@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:create, :index]
+  skip_before_action :authorized, only: [:create, :index, :prerender_service]
   
   def index
     users = User.has_published_posts.includes(:images)
@@ -72,6 +72,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+  end
+
+  def prerender_service
+    render json: {message: 'Prerender service for the NGINX server'}, status: 200
   end
 
   private
