@@ -75,7 +75,7 @@ class UsersController < ApplicationController
   end
 
   def prerender_service
-    render json: {message: 'Prerender service for the NGINX server'}, status: 200
+    render html: "<h1>Ehllo form rails</h1>"
   end
 
   private
