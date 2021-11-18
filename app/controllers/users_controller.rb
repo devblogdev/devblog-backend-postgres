@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:create, :index, :prerender_service]
-  
+  skip_before_action :authorized, only: [:create, :index]
+
   def index
     users = User.has_published_posts.includes(:images)
     render json: UserBlueprint.render(users, view: :extended)
@@ -72,10 +72,6 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-  end
-
-  def prerender_service
-    render html: "<h1>Ehllo form rails</h1>"
   end
 
   private

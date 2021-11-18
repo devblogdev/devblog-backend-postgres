@@ -18,13 +18,18 @@ Rails.application.routes.draw do
   #   end
   # end
 
-  root "posts#index"
-  get "/", to: 'posts#index'
+  # root "posts#index"
+  # get "/", to: 'posts#index'
   get '/profile', to: 'users#profile'
   get 'luisdevblog/registration-confirmation/:confirmation_token', to: 'users#confirm_email'
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
   
+  
+  
+  # Prerender service routes
+  # get '*other', to: 'static#index'
+  get '/hello', to: 'static#index'
 
-  get "/index.html", to: 'users#prerender_service'
+
 end
