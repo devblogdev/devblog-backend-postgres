@@ -28,8 +28,8 @@ Rails.application.routes.draw do
   
   
   # Prerender service routes
+  
+  get '/static', to: 'dynamic_meta_tags#index'
+
   # get '*other', to: 'static#index'
-  get '/hello', to: 'static#index'
-
-
 end
