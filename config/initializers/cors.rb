@@ -7,7 +7,16 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ENV['FRONT_END_URL']
+    origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN']
+
+    resource '*',
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
+  end
+
+  allow do
+    origins ENV['FRONT_END_URL_CUSTOM_DOMAIN']
 
     resource '*',
       headers: :any,

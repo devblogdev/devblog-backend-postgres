@@ -25,15 +25,27 @@ module DevblogBackend
     config.load_defaults 6.1
     
     config.middleware.insert_before 0, Rack::Cors do
+
       allow do
         # origins '*'
-        origins ENV['FRONT_END_URL']
+        origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN']
         resource '*',
           :headers => :any,
           :methods => [:get, :post, :delete, :put, :patch, :options, :head]
           # :max_age => 0 ,
           # credentials: true
       end
+
+      allow do
+        # origins '*'
+        origins ENV['FRONT_END_URL_CUSTOM_DOMAIN']
+        resource '*',
+          :headers => :any,
+          :methods => [:get, :post, :delete, :put, :patch, :options, :head]
+          # :max_age => 0 ,
+          # credentials: true
+      end
+
     end
 
     # Configuration for the application, engines, and railties goes here.
