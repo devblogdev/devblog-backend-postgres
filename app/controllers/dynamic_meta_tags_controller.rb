@@ -36,7 +36,7 @@ class DynamicMetaTagsController < ActionController::API
   append_view_path "#{Rails.root}/app/views/dynamic_meta_tags"
 
   def index
-    @dynamic = Post.first.abstract
+    @author = User.first
     render "index"
   end
 end

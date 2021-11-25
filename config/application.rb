@@ -37,13 +37,17 @@ module DevblogBackend
       end
 
       allow do
-        # origins '*'
         origins ENV['FRONT_END_URL_CUSTOM_DOMAIN']
         resource '*',
           :headers => :any,
           :methods => [:get, :post, :delete, :put, :patch, :options, :head]
-          # :max_age => 0 ,
-          # credentials: true
+      end
+
+      allow do
+        origins ENV['FRONT_END_URL_TEST']
+        resource '*',
+          :headers => :any,
+          :methods => [:get, :post, :delete, :put, :patch, :options, :head]
       end
 
     end
