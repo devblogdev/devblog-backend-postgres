@@ -43,15 +43,16 @@ class PostsController < ApplicationController
     if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], url: post_params[:url], status: post_params[:status])
       # If the post is a draft that is being published, update the creation time to equal the published (updated) time 
       @post.update(created_at: @post.updated_at) if status_before_update == "draft" && post_params[:status] == "published"
-      # If the post has a cover image, and the paramss do not include an image, delete the post image
+      # There are 4 cases regarding the cover image for a post
+      # Case 1: If the post has a cover image, and the paramss do not include an image, delete the post image
       if @post.images[0] && post_params[:images_attributes].empty?
         @post.images = []
         render json: PostBlueprint.render(@post, view: :extended)
-      # If the post has a cover image, and the paramss do include an image, update the post image
+      # Case 2: If the post has a cover image, and the paramss do include an image, update the post image
       elsif @post.images[0] && !post_params[:images_attributes].empty?
         @post.images[0].update(post_params[:images_attributes][0])
         render json: PostBlueprint.render(@post, view: :extended)
-      # If the post does not have a cover image, and the paramss include an image, create the image for the post 
+      # Case 3: If the post does not have a cover image, and the paramss include an image, create the image for the post 
       elsif @post.images.empty? && !post_params[:images_attributes].empty?
         @post.images.create(post_params[:images_attributes][0])
         render json: PostBlueprint.render(@post, view: :extended)
