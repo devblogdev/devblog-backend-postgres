@@ -37,8 +37,6 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    # THE BELOW LINE WILL BE TEMPPRARILY USE TO FIX THE PUBLLICATION TIME OF THE LAST PUBLISHED POST; then it will be removed
-    @post.update(created_at: @post.updated_at)
     # Store the status of the post to change its creation time when it gets published
     status_before_update = @post.status
     # Update all fields except for the images attributes field
