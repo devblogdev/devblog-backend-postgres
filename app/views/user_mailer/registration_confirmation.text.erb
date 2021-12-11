@@ -1,3 +1,7 @@
 Hi <%= @user.first_name %>
-Thanks for registering at DevBlog! To confirm your registration, click the URL below.
-<%= link_to "Activate Account", "/luisdevblog/registration-confirmation/#{@user.confirm_token}" %>
+
+Thanks for registering at DevBlog! To confirm your registration, click on the below link:
+
+<%= ENV["HEROKU_DEVBLOG_URL"] %>/registration-confirmation/<%= @user.confirm_token %>
+
+
