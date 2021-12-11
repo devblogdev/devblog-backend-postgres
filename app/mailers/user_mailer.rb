@@ -1,4 +1,4 @@
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
     default :from => 'luisdevblog@netlify.app'
 
     def registration_confirmation(user)
