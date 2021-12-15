@@ -1,7 +1,7 @@
 Hi <%= @user.first_name %>
 
-Thanks for registering at DevBlog! To confirm your registration, click on the below link:
+Thanks for registering at DevBlog! To confirm your email, click on the below link:
 
-<%= ENV["HEROKU_DEVBLOG_URL"] %>/registration-confirmation/<%= @user.confirm_token %>
+<%= ENV["FRONT_END_URL_NETLIFY_SUBDOMAIN"] %>/registration-confirmation/<%= @user.confirm_token %>
 
 

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:create, :index]
+  skip_before_action :authorized, only: [:create, :index, :confirm_email]
 
   def index
     users = User.has_published_posts.includes(:images)
@@ -18,35 +18,39 @@ class UsersController < ApplicationController
   # This API uses Json Web Tokens (JWT) for user authentication; 
   # This controller action is when users sign up for fist time to app's frontend
   # A json web token is created and passes to the client side (the frontend)
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      @token = encode_token(user_id: @user.id)
-      render json: {user: @user, jwt: @token}, status: :created
-    else
-      render json: { errors: @user.errors.full_messages }, status: :not_acceptable
-    end
-  end
   # def create
   #   @user = User.new(user_params)
   #   if @user.save
-  #     # byebug
-  #     UserMailer.registration_confirmation(@user).deliver_now
   #     @token = encode_token(user_id: @user.id)
-  #     render json: ["Please confirm your email address to continue"], status: :created
-  #     # render json: {user: @user, jwt: @token}, status: :created
+  #     render json: {user: @user, jwt: @token}, status: :created
   #   else
   #     render json: { errors: @user.errors.full_messages }, status: :not_acceptable
   #   end
   # end
 
+  def create
+    @user = User.new(user_params)
+    @user.confirmation_token
+    if @user.save
+      # byebug
+      UserMailer.registration_confirmation(@user).deliver_now
+      # @token = encode_token(user_id: @user.id)
+      render json: { email: @user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
+      # render json: {user: @user, jwt: @token}, status: :created
+    else
+      render json: { errors: @user.errors.full_messages }, status: :not_acceptable
+    end
+  end
+
   def confirm_email
-    user = User.find_by_confirm_token(params[:confirm_email])
+    user = User.find_by_confirm_token(params[:confirm_token])
     if user
       user.email_activate
-      render json: ["Welcome to DevBlog! Your email has been confirmed. Please log in to continue."]
+      @token = encode_token(user_id: user.id)
+      render json: {user: user, jwt: @token}, status: :created
+      # render json: ["Welcome to DevBlog! Your email has been confirmed. Please log in to continue."]
     else
-      render json: ["Sorry, user does not exist"]
+      render json: ["Sorry, user does not exist"], status: :not_acceptable
     end
   end
 

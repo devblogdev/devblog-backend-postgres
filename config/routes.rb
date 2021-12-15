@@ -6,29 +6,38 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :create, :update]
   resources :images, only: [:index]
 
+  # Local Login
   namespace :api do 
     namespace :v1 do
+      # Local Login
       resources :auth, only: [:create]
+      # Omniauth Login
+      post "auth/:provider/callback", to: "auth#omniauth"
     end
   end
+
+  # Omniauth Login
+  # get '/auth/:provider/callback', to: 'sessions#omniauth'
 
   # resources  :users do 
   #   member do 
   #     get :confirm_email
   #   end
   # end
+  
 
   # root "posts#index"
   # get "/", to: 'posts#index'
   get '/profile', to: 'users#profile'
-  get 'luisdevblog/registration-confirmation/:confirmation_token', to: 'users#confirm_email'
+  # Email Confirmation route for new Local users (new Omniauth users are processes through the api::v1:auth controller)
+  post '/registration-confirmation/:confirm_token', to: 'users#confirm_email'
+
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
   
   
   
   # Prerender service routes
-  
   get '/static', to: 'dynamic_meta_tags#index'
 
   # get '*other', to: 'static#index'

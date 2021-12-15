@@ -1,5 +1,5 @@
 <p>Hi <%= @user.first_name %></p>
 
-<p>Thanks for registering at DevBlog! To confirm your registration, click on the below link:</p>
+<p>Thanks for registering at DevBlog! To confirm your email, click on the below link:</p>
 
-<p><%= link_to "Activate Account", "#{ENV["HEROKU_DEVBLOG_URL"]}/registration-confirmation/#{@user.confirm_token}" %></p>
+<p><%= link_to "Activate Account", "#{ENV["FRONT_END_URL_NETLIFY_SUBDOMAIN"]}/registration-confirmation/#{@user.confirm_token}" %></p>

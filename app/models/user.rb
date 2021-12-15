@@ -15,18 +15,26 @@ class User < ApplicationRecord
 
     
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
+
+    # def self.from_omniauth(auth)
+    #     self.find_or_create_by(provider: auth["provider"], uid: auth["uid"]) do |u|
+    #       u.email = auth["info"]["email"]
+    #       u.username = auth['info']['name'].downcase.gsub(" ", "_")
+    #       u.password = SecureRandom.hex(20)
+    #     end
+    # end
     
     def full_name
      "#{self.first_name}" + " #{self.last_name}"
     end
 
-    def confirmation_token
-        if self.confirm_token.blank?
-            self.confirm_token = SecureRandom.urlsafe_base64.to_s
-        end
-    end
+    # def confirmation_token
+    #     if self.confirm_token.blank?
+    #         self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    #     end
+    # end
 
-    private
+    # private
     def confirmation_token
         if self.confirm_token.blank?
             self.confirm_token = SecureRandom.urlsafe_base64.to_s
