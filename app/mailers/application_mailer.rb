@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'em3611.devblog.dev'
+  default from: 'devblog.dev'
   layout 'mailer'
 end
