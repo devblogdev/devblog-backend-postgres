@@ -1,6 +1,6 @@
 class PasswordResetMailer < ApplicationMailer
-    default :from => 'luisdevblog@netlify.app'
-    
+    default :from => 'em3611.devblog.dev'
+
     def password_reset(user)
         @user = user
         mail(:to => user.email, :subject => "Password Reset")
