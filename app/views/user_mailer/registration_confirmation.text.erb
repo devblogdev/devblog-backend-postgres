@@ -1,6 +1,6 @@
-Hi <%= @user.first_name %>
+Hi <%= @user.first_name %>,
 
-Thanks for registering at DevBlog! To confirm your email, click on the below link:
+Thanks for registering at DevBlog!!! To confirm your email, click on the below link:
 
 <%= ENV["FRONT_END_URL_CUSTOM_DOMAIN"] %>/registration-confirmation/<%= @user.confirm_token %>
 

@@ -1,5 +1,5 @@
 class PasswordResetMailer < ApplicationMailer
-    default :from => 'devblog.dev'
+    default :from => 'DevBlog Suport<support@devblog.dev>'
 
     def password_reset(user)
         @user = user
