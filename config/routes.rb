@@ -29,8 +29,14 @@ Rails.application.routes.draw do
   # root "posts#index"
   # get "/", to: 'posts#index'
   get '/profile', to: 'users#profile'
-  # Email Confirmation route for new Local users (new Omniauth users are processes through the api::v1:auth controller)
+  
+  # New use sign up protocol
   post '/registration-confirmation/:confirm_token', to: 'users#confirm_email'
+
+  # Password reset protocol
+  # post '/password-reset', to: 'users#send_password_reset_link'
+  # post '/password-reset/:confirm_token', to: 'users#clicked_password_reset_link'
+  # post '/password-reset/email', to: 'users#reset_password'
 
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'

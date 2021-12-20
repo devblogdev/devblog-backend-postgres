@@ -12,7 +12,6 @@ class Api::V1::AuthController < ApplicationController
       end
     end
 
-
     def omniauth
       # @user = User.from_omniauth(auth)
       # if @user && @user.authenticate(user_login_params[:password])

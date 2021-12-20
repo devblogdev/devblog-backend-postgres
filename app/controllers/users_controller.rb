@@ -54,10 +54,39 @@ class UsersController < ApplicationController
     end
   end
 
+  def send_password_reset_link
+    @user = User.find_by_email(params[:email].downcase)
+    if @user && @user.email_confirmed
+      UserMailer.password_reset(@user).deliver_now
+      render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted
+    else
+      render json: { errors: ['This email is not registered at DevBlog. Please try signing up instead'] }, status: :unauthorized
+    end
+  end
+
+  def clicked_password_reset_link
+    user = User.find_by_confirm_token(params[:confirm_token])
+    if user && user.email_confirmed
+      user.confirm_token = nil
+      render json: { email: user.email, message: ["Password reset link properly consumed"]}
+    else
+      render json: ["This links has already been used. Please try password reset again"], status: :not_acceptable
+    end
+  end
+
+  def reset_password
+    user = User.find_by_email(params[:email].downcase)
+    if user && user.update(password: params[:password])
+      render json: ["Password has been successfully reset"], status: :accepted
+    else
+      render json: { errors: user ? errors.full_messages : ["An error occurred, Please try the process again"] }, status: :not_acceptable
+    end
+  end
+
   def update
     # Temp code for fixing email verification
     u = User.find_by_email("venid.sedientos01@gmail.com")
-    u.delete
+    u.delete if u
     # Temp code for fixing email verification
     if @user.update( bio: user_params[:bio] )      
       if @user.images[0] && user_params[:images_attributes].empty?
