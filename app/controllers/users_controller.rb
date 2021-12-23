@@ -1,6 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:create, :index, :confirm_email]
+  skip_before_action :authorized, only: [
+    :create, 
+    :index, 
+    :confirm_email, 
+    :send_password_reset_link,
+    :clicked_password_reset_link,
+    :reset_password
+  ]
 
   def index
     users = User.has_published_posts.includes(:images)
@@ -56,18 +63,18 @@ class UsersController < ApplicationController
 
   def send_password_reset_link
     @user = User.find_by_email(params[:email].downcase)
-    if @user && @user.email_confirmed
+    @user.confirmation_token 
+    if @user && @user.email_confirmed && @user.save
       UserMailer.password_reset(@user).deliver_now
       render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted
     else
-      render json: { errors: ['This email is not registered at DevBlog. Please try signing up instead'] }, status: :unauthorized
+      render json: { errors: ['This email is not registered at DevBlog. Please try signing up instead'] }, status: :not_acceptable
     end
   end
 
   def clicked_password_reset_link
     user = User.find_by_confirm_token(params[:confirm_token])
     if user && user.email_confirmed
-      user.confirm_token = nil
       render json: { email: user.email, message: ["Password reset link properly consumed"]}
     else
       render json: ["This links has already been used. Please try password reset again"], status: :not_acceptable
@@ -76,10 +83,10 @@ class UsersController < ApplicationController
 
   def reset_password
     user = User.find_by_email(params[:email].downcase)
-    if user && user.update(password: params[:password])
+    if user && user.update(password: params[:password], confirm_token: nil)
       render json: ["Password has been successfully reset"], status: :accepted
     else
-      render json: { errors: user ? errors.full_messages : ["An error occurred, Please try the process again"] }, status: :not_acceptable
+      render json: { errors: user ? user.errors.full_messages : ["An error occurred. Please try the process again"] }, status: :not_acceptable
     end
   end
 

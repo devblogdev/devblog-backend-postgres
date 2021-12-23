@@ -5,4 +5,9 @@ class UserMailerPreview < ActionMailer::Preview
         user = User.first
         UserMailer.registration_confirmation(user)
     end
+
+    def password_reset
+        user = User.first
+        UserMailer.password_reset(user)
+    end
 end

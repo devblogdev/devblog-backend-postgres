@@ -30,13 +30,13 @@ Rails.application.routes.draw do
   # get "/", to: 'posts#index'
   get '/profile', to: 'users#profile'
   
-  # New use sign up protocol
+  # New user sign up protocol
   post '/registration-confirmation/:confirm_token', to: 'users#confirm_email'
 
   # Password reset protocol
-  # post '/password-reset', to: 'users#send_password_reset_link'
-  # post '/password-reset/:confirm_token', to: 'users#clicked_password_reset_link'
-  # post '/password-reset/email', to: 'users#reset_password'
+  post '/password-reset', to: 'users#send_password_reset_link'    # When the user submits his/her email for password reset; the controller sends an email to user
+  post '/password-reset/:confirm_token', to: 'users#clicked_password_reset_link'     # When the user clicks on the link sent by controller, the front end sends a post request to obtian user's email
+  post '/reset-password', to: 'users#reset_password'    # When the user submits his/her new password form, the controller updates the user's password
 
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
