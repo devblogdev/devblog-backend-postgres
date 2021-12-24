@@ -23,6 +23,9 @@ module DevblogBackend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+
+    # Activates ActiveJob for assynchronous tasks
+    config.active_job.queue_adapter = :sidekiq
     
     config.middleware.insert_before 0, Rack::Cors do
 

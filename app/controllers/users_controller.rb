@@ -39,11 +39,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.confirmation_token
     if @user.save
-      # byebug
+      UsersCleanupJob.set(wait: 1.minutes).perform_later(@user.email)
       UserMailer.registration_confirmation(@user).deliver_now
-      # @token = encode_token(user_id: @user.id)
       render json: { email: @user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
-      # render json: {user: @user, jwt: @token}, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :not_acceptable
     end
@@ -65,6 +63,7 @@ class UsersController < ApplicationController
     @user = User.find_by_email(params[:email].downcase)
     @user.confirmation_token 
     if @user && @user.email_confirmed && @user.save
+      DeactivateTokenJob.set(wait: 1.minutes).perform_later(@user.confirm_token)
       UserMailer.password_reset(@user).deliver_now
       render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted
     else
@@ -74,7 +73,7 @@ class UsersController < ApplicationController
 
   def clicked_password_reset_link
     user = User.find_by_confirm_token(params[:confirm_token])
-    if user && user.email_confirmed
+    if user && user.email_confirmed && user.update(confirm_token: nil)
       render json: { email: user.email, message: ["Password reset link properly consumed"]}
     else
       render json: ["This links has already been used. Please try password reset again"], status: :not_acceptable
@@ -83,7 +82,7 @@ class UsersController < ApplicationController
 
   def reset_password
     user = User.find_by_email(params[:email].downcase)
-    if user && user.update(password: params[:password], confirm_token: nil)
+    if user && user.update(password: params[:password])
       render json: ["Password has been successfully reset"], status: :accepted
     else
       render json: { errors: user ? user.errors.full_messages : ["An error occurred. Please try the process again"] }, status: :not_acceptable
