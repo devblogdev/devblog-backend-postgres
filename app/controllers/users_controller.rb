@@ -40,7 +40,7 @@ class UsersController < ApplicationController
     @user.confirmation_token
     if @user.save
       UsersCleanupJob.set(wait: 1.minutes).perform_later(@user.email)
-      UserMailer.registration_confirmation(@user).deliver_now
+      # UserMailer.registration_confirmation(@user).deliver_now
       render json: { email: @user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
     else
       render json: { errors: @user.errors.full_messages }, status: :not_acceptable
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     @user = User.find_by_email(params[:email].downcase)
     @user.confirmation_token 
     if @user && @user.email_confirmed && @user.save
-      DeactivateTokenJob.set(wait: 1.minutes).perform_later(@user.confirm_token)
+      # DeactivateTokenJob.set(wait: 1.minutes).perform_later(@user.confirm_token)
       UserMailer.password_reset(@user).deliver_now
       render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted
     else
