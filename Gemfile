@@ -25,8 +25,13 @@ gem 'httparty'
 gem 'valid_email2'
 # prerender is used to serve a cached version of the requested page to search engine bots
 gem 'prerender_rails'
+# Sidekiq ia used to run assynchronous taks
 gem 'sidekiq'
 
+# Redis isa NoSQL data store; it is used along with 'sidekiq' to sotre the commnads for the taks perfomred by sideqik
+gem 'redis'
+gem 'redis-namespace'
+gem 'redis-rails'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

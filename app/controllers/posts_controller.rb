@@ -6,7 +6,11 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     # database_posts = Post.where(status: :published).order(created_at: :desc)
+    # NEW LINES FOR IMPLEMENTING CACHING **********************
+    # Rails.cache.fetch([cache_key, __method__], expires_in: 30.minutes) do
     database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
+    # end
+    # NEW LINES FOR IMPLEMENTING CACHING ***********************
     begin      
       new_york_times_posts = NewYorkTimes.new.section("world").take(25)
     rescue 

@@ -8,6 +8,16 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+
+    # # NEW LINES ************************************
+    # config.cache_store = :redis_store, {
+    # expires_in: 1.hour,
+    # namespace: 'cache',
+    # redis: { host: 'localhost', port: 6379, db: 0 },
+    # }
+    # # NEW LINES ************************************
+    
+
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -77,8 +87,8 @@ Rails.application.configure do
   #   address:              'smtp.gmail.com',
   #   port:                 587,
   #   domain:               'example.com',
-  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],
-  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],
+  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],    Eliminate
+  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],    Eliminate
   #   authentication:       'plain',
   #   enable_starttls_auto: true 
   # }
