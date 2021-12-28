@@ -15,6 +15,10 @@ require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
+# THESE LINES WERE IN cable.yml
+  # url: <%= ENV.fetch("REDIS_URL") %>/<%= ENV.fetch("REDIS_DB") %>
+  # url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
