@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   end
 
   def send_password_reset_link
-    puts "#{ENV.fetch('REDIS_TLS_URL')}"
+    puts "#{ENV.fetch('REDIS_URL')}"
     puts "Hello"
     @user = User.find_by_email(params[:email].downcase)
     @user.confirmation_token if @user
