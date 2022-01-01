@@ -39,8 +39,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.confirmation_token
     if @user.save
-      # UsersCleanupJob.set(wait: 1.minutes).perform_later(@user.email)
-      # UserMailer.registration_confirmation(@user).deliver_now
+      UsersCleanupJob.set(wait: 10.seconds).perform_later(@user.email)
+      UserMailer.registration_confirmation(@user).deliver_now
       render json: { email: @user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
     else
       render json: { errors: @user.errors.full_messages }, status: :not_acceptable
@@ -53,15 +53,12 @@ class UsersController < ApplicationController
       user.email_activate
       @token = encode_token(user_id: user.id)
       render json: {user: user, jwt: @token}, status: :created
-      # render json: ["Welcome to DevBlog! Your email has been confirmed. Please log in to continue."]
     else
       render json: ["Sorry, user does not exist"], status: :not_acceptable
     end
   end
 
   def send_password_reset_link
-    puts "#{ENV.fetch('REDIS_URL')}"
-    puts "Hello"
     @user = User.find_by_email(params[:email].downcase)
     @user.confirmation_token if @user
     if @user && @user.email_confirmed && @user.save
