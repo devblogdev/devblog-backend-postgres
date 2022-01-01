@@ -1,7 +1,8 @@
-Redis.current = Redis.new(url:  ENV['REDIS_TLS_URL'],
-                        #   port: ENV['REDIS_PORT'],
-                        #   db:   ENV['REDIS_DB']
-                          )
+# Redis.current = Redis.new(url: ENV['REDIS_TLS_URL']
+#                           port: ENV['REDIS_PORT']
+#                         #   db:   ENV['REDIS_DB']
+#                           )
+$redis = Redis.new(url: ENV["REDIS_TLS_URL"], ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
 
 
 # USING SENTINEL FOR RAILS SERVER AUTOMATIC RE-START IN CASE OF SHURDOWN
