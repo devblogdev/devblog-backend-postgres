@@ -65,8 +65,8 @@ class UsersController < ApplicationController
     @user = User.find_by_email(params[:email].downcase)
     @user.confirmation_token if @user
     if @user && @user.email_confirmed && @user.save
-      DeactivateTokenJob.set(wait: 10.seconds).perform_later(@user.confirm_token)
-      # UserMailer.password_reset(@user).deliver_now
+      DeactivateTokenJob.set(wait: 10.minutes).perform_later(@user.confirm_token)
+      UserMailer.password_reset(@user).deliver_now
       render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted
     else
       render json: { errors: ['This email is not registered at DevBlog. Please try signing up instead'] }, status: :not_acceptable
