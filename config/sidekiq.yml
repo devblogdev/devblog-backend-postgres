@@ -1,4 +1,10 @@
-# :queues:
-#   - [high, 3]
-#   - [default, 2]
-#   - [low, 1]
+:queues:
+  - [high, 3]
+  - [default, 2]
+  - [low, 1]
+
+
+production:
+  :concurrency: 15
+staging:
+  :concurrency: 15
