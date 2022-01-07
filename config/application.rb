@@ -35,7 +35,7 @@ module DevblogBackend
 
       allow do
         # origins '*'
-        origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN']
+        origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN'] || "http://localhost:8001"
         resource '*',
           :headers => :any,
           :methods => [:get, :post, :delete, :put, :patch, :options, :head]
@@ -44,18 +44,18 @@ module DevblogBackend
       end
 
       allow do
-        origins ENV['FRONT_END_URL_CUSTOM_DOMAIN']
+        origins ENV['FRONT_END_URL_CUSTOM_DOMAIN'] || "http://localhost:8000"
         resource '*',
           :headers => :any,
           :methods => [:get, :post, :delete, :put, :patch, :options, :head]
       end
 
-      allow do
-        origins ENV['FRONT_END_URL_TEST']
-        resource '*',
-          :headers => :any,
-          :methods => [:get, :post, :delete, :put, :patch, :options, :head]
-      end
+      # allow do
+      #   origins ENV['FRONT_END_URL_TEST']
+      #   resource '*',
+      #     :headers => :any,
+      #     :methods => [:get, :post, :delete, :put, :patch, :options, :head]
+      # end
 
     end
 

@@ -3023,4 +3023,4 @@ end
 
 data = NEW_YORK_TIMES_POSTS[:results]
 
-testingDatabase(data)
+# testingDatabase(data)

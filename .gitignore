@@ -31,7 +31,7 @@
 /config/master.key
 
 .env
-/dump.rdb
+dump.rdb
 
 # Ignore application configuration
 /config/application.yml
