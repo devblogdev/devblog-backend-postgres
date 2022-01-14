@@ -31,13 +31,25 @@ require 'rails/application_controller'
 # body = ActionController::Renderer.for(ApplicationController).render(inline: model.body, layout: 'customer')
 
 class DynamicMetaTagsController < ActionController::API
+# class DynamicMetaTagsController < ApplicationController
+skip_before_action :verify_authenticity_token
   include AbstractController::Rendering
   include ActionView::Layouts
   append_view_path "#{Rails.root}/app/views/dynamic_meta_tags"
-
+  # include ActionController::RequestForgeryProtection
+  # protect_from_forgery with: :null_session
+  
+  # skip_before_action :verify_authenticity_token, only: :index
+  # skip_forgery_protection
   def index
     @author = User.first
+    # <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+    # <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    response.headers['X-CSRF-Token'] = form_authenticity_token
     render "index"
   end
+  # private 
+  # def protect_from_forgery
+  # end
 end
 

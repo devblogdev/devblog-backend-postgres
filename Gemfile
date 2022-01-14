@@ -28,10 +28,14 @@ gem 'prerender_rails'
 # Sidekiq ia used to run assynchronous taks
 gem 'sidekiq'
 
-# Redis isa NoSQL data store; it is used along with 'sidekiq' to sotre the commnads for the taks perfomred by sideqik
+# Redis is a NoSQL data store; it is used along with 'sidekiq' to sotre the commnads for the taks perfomred by sideqik
 gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails'
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

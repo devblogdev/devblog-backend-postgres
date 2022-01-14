@@ -6,9 +6,11 @@ class UsersController < ApplicationController
     :confirm_email, 
     :send_password_reset_link,
     :clicked_password_reset_link,
-    :reset_password
+    :reset_password,
+    :omni,
+    :omniauth
   ]
-
+  # skip_before_action :verify_authenticity_token
   def index
     users = User.has_published_posts.includes(:images)
     render json: UserBlueprint.render(users, view: :extended)

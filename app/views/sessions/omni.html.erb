@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= csrf_meta_tags %>    
+    <title>Dynamic Controller Meta Title</title>
+    <meta name="Description" content="Dynamic controller meta description" >
+    <style> 
+        #backendWindow {
+            display: none;
+            visibility: hidden;
+        }
+    </style>
+    <script type="text/javascript">     
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // const b = document.getElementById("myForm")            
+             //console.log(b.submit())
+            //console.log('DOM fully loaded and parsed');
+            <%== @hello  %>
+        });
+        function saySomething() {
+            console.log("something")
+        }
+    </script>
+    <script type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="backendWindow">
+        <h1> Testing Dynamic Meta Tags</h1>
+        <h2>Bio: <%== @author %></h2>
+        <%= button_to "Log in with Google", "/auth/google_oauth2" %><br>
+        <%= link_to "Log in with Google", "/auth/google_oauth2" %><br>
+        <%= form_tag "/auth/google_oauth2", method: :post, :id => "myForm" do %>
+            <%= submit_tag("Use Google") %>
+        <% end %>
+        <button type="button" onclick="send();" id="hello" class='btn gray_btn'><%= t('action.send') %></button>
+    </div>
+  </body>
+</html>
+

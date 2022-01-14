@@ -30,6 +30,9 @@ module DevblogBackend
 
     # Activates ActiveJob for assynchronous tasks
     config.active_job.queue_adapter = :sidekiq
+
+    # NEW LINE: this line seems to have no effect in Omniauth functionality
+    # config.action_controller.default_protect_from_forgery = false
     
     config.middleware.insert_before 0, Rack::Cors do
 
@@ -59,6 +62,10 @@ module DevblogBackend
 
     end
 
+    # NEW LINES
+    # config.action_view.embed_authenticity_token_in_remote_forms=true
+    
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -71,5 +78,11 @@ module DevblogBackend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # New lines for OmniAuth gem to work:
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
   end
 end

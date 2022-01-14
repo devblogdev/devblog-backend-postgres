@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
+    # skip_before_action :verify_authenticity_token
     before_action :authorized
-
+    
     # This API uses JWT for user authentication
     # The below 'encode_token' method is used to generate a json web token
     # It is used in create action of users_controller to create a jwt when a user signs up
@@ -10,14 +11,12 @@ class ApplicationController < ActionController::API
         JWT.encode(payload, "secret")
     end
 
-    def author_header
-        # byebug
+    def author_header        
         request.headers["Authorization"]
     end
 
     def decoded_token
         if author_header
-            # byebug
             token = author_header.split(" ")[1]
             begin 
                 JWT.decode(token, "secret", algorithm: 'H2S56')

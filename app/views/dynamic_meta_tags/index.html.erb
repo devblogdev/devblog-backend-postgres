@@ -2,4 +2,8 @@
     <h1> Testing Dynamic Meta Tags</h1>
     <h2>Author: <%= @author.first_name %> <%= @author.last_name %></h2>
     <h2>Bio: <%= @author.bio %></h2>
+    <%= button_to "Log in with Google", "/auth/google_oauth2" %><br>
+    <%= form_tag "/auth/google_oauth2", method: :post do %>
+        <%= submit_tag("Use Google") %>
+    <% end %>
 </div>

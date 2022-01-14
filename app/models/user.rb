@@ -16,25 +16,23 @@ class User < ApplicationRecord
     
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
 
-    # def self.from_omniauth(auth)
-    #     self.find_or_create_by(provider: auth["provider"], uid: auth["uid"]) do |u|
-    #       u.email = auth["info"]["email"]
-    #       u.username = auth['info']['name'].downcase.gsub(" ", "_")
-    #       u.password = SecureRandom.hex(20)
-    #     end
-    # end
+    def self.from_omniauth(auth_frontend)
+        # self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
+        user = self.find_or_create_by(email: auth_frontend["email"]) do |u|
+        #   u.email = auth_frontend["email"]
+          u.first_name = auth_frontend['first_name']
+          u.last_name = auth_frontend['last_name']
+          u.password = SecureRandom.hex(20)
+          u.email_confirmed = true
+        end
+        user.images.create(url: auth_frontend["profile_image"])
+        user
+    end
     
     def full_name
      "#{self.first_name}" + " #{self.last_name}"
     end
 
-    # def confirmation_token
-    #     if self.confirm_token.blank?
-    #         self.confirm_token = SecureRandom.urlsafe_base64.to_s
-    #     end
-    # end
-
-    # private
     def confirmation_token
         if self.confirm_token.blank?
             self.confirm_token = SecureRandom.urlsafe_base64.to_s

@@ -11,19 +11,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Local Login
       resources :auth, only: [:create]
-      # Omniauth Login
-      post "auth/:provider/callback", to: "auth#omniauth"
     end
   end
 
   # Omniauth Login
-  # get '/auth/:provider/callback', to: 'sessions#omniauth'
-
-  # resources  :users do 
-  #   member do 
-  #     get :confirm_email
-  #   end
-  # end
+  # get '/omniauth/:provider/callback', to: 'sessions#omniauth'   #to be sued later
+  post 'omniauth/:provider/callback', to: 'sessions#omniauth_frontend'
   
 
   # root "posts#index"
@@ -42,9 +35,7 @@ Rails.application.routes.draw do
   post '/publish', to:'posts#create'
   
   
-  
   # Prerender service routes
-  get '/static', to: 'dynamic_meta_tags#index'
-
+  # get '/static', to: 'sessions#omni'
   # get '*other', to: 'static#index'
 end

@@ -81,7 +81,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
 
-  # NEW LINES
+  # CONFIGURATION IF USING PERSONAL EMAIL ACCOUNT
   # config.action_mailer.delivery_method = :smtp
   # config.action_mailer.smtp_settings = {
   #   address:              'smtp.gmail.com',
