@@ -32,14 +32,13 @@ require 'rails/application_controller'
 
 class DynamicMetaTagsController < ActionController::API
 # class DynamicMetaTagsController < ApplicationController
-skip_before_action :verify_authenticity_token
   include AbstractController::Rendering
   include ActionView::Layouts
   append_view_path "#{Rails.root}/app/views/dynamic_meta_tags"
   # include ActionController::RequestForgeryProtection
   # protect_from_forgery with: :null_session
   
-  # skip_before_action :verify_authenticity_token, only: :index
+  
   # skip_forgery_protection
   def index
     @author = User.first

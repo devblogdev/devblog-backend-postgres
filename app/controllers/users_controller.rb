@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     :omni,
     :omniauth
   ]
-  # skip_before_action :verify_authenticity_token
+  
   def index
     users = User.has_published_posts.includes(:images)
     render json: UserBlueprint.render(users, view: :extended)
