@@ -55,11 +55,11 @@ end
     #     :headers => { 'Content-Type' => 'application/x-www-form-urlencoded', 'X-CSRF-Token' => form_authenticity_token }
     # )
 
-    # "https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?access_type=offline&client_id=214498708920-p018oltd0uki26s2csoltescdi8f6gl6.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email%20profile&state=19502a64d70baa655d1aaecd0902091158755cdbff68a83b&flowName=GeneralOAuthFlow"
+    # "https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?access_type=offline&client_id=someid&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email%20profile&state=19502a64d70baa655d1aaecd0902091158755cdbff68a83b&flowName=GeneralOAuthFlow"
     # https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?
     # access_type=offline&
-    # client_id=214498708920-p018oltd0uki26s2csoltescdi8f6gl6.apps.googleusercontent.com&r
-    # edirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fgoogle_oauth2%2Fcallback&
+    # client_id=someid
+    # redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fgoogle_oauth2%2Fcallback&
     # response_type=code&
     # scope=email%20profile&
     # state=19502a64d70baa655d1aaecd0902091158755cdbff68a83b&
