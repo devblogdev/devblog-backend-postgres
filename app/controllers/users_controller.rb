@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   # A json web token is created and passes to the client side (the frontend)
   def confirm_email
     user = User.find_by_confirm_token(params[:confirm_token])
-    if user
+    if user 
       user.email_activate
       @token = encode_token(user_id: user.id)
       render json: {user: user, jwt: @token}, status: :created
@@ -52,8 +52,9 @@ class UsersController < ApplicationController
 
   def send_password_reset_link
     @user = User.find_by_email(params[:email].downcase)
-    @user.confirmation_token if @user
-    if @user && @user.email_confirmed && @user.save
+    if @user && @user.email_confirmed && @user.provider.nil?
+      @user.confirmation_token 
+      @user.save
       DeactivateTokenJob.set(wait: 10.minutes).perform_later(@user.confirm_token)
       UserMailer.password_reset(@user).deliver_now
       render json: { message: ["Password reset instructions sent to email"], email: @user.email}, status: :accepted

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_03_035218) do
+ActiveRecord::Schema.define(version: 2022_01_14_224720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,10 @@ ActiveRecord::Schema.define(version: 2021_10_03_035218) do
     t.jsonb "private", default: "{}", null: false
     t.boolean "email_confirmed", default: false
     t.text "confirm_token"
+    t.text "uid"
+    t.text "provider"
+    t.text "access_token"
+    t.text "refresh_token"
   end
 
   add_foreign_key "comments", "posts"

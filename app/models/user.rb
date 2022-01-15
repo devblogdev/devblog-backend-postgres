@@ -17,15 +17,20 @@ class User < ApplicationRecord
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
 
     def self.from_omniauth(auth_frontend)
-        # self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
-        user = self.find_or_create_by(email: auth_frontend["email"]) do |u|
-        #   u.email = auth_frontend["email"]
-          u.first_name = auth_frontend['first_name']
-          u.last_name = auth_frontend['last_name']
-          u.password = SecureRandom.hex(20)
-          u.email_confirmed = true
+        user = self.find_by(email: auth_frontend["email"])   
+        # If the user regisered via normal sign up, confirmed email, and then tries to register via OAuth using the same email, skip the OAuth process
+        unless user && user.email_confirmed && user.provider.nil?
+            # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
+            user.delete if user && !user.email_confirmed        
+            user = self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
+                u.email = auth_frontend["email"]
+                u.first_name = auth_frontend['first_name']
+                u.last_name = auth_frontend['last_name']
+                u.password = SecureRandom.hex(20)
+                u.email_confirmed = true
+            end
+            user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
         end
-        user.images.create(url: auth_frontend["profile_image"])
         user
     end
     

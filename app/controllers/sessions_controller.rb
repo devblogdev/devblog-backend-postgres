@@ -9,12 +9,12 @@ class SessionsController < ApplicationController
     skip_before_action :authorized
 
     def omniauth_frontend
-        @user = User.from_omniauth(auth_frontend)
-        if @user && @user.valid?
-          token = encode_token({user_id: @user.id})
-          render json: { user: @user, jwt: token}, status: :accepted
+        user = User.from_omniauth(auth_frontend)
+        if !user.provider.nil?
+          token = encode_token({user_id: user.id})
+          render json: { user: user, jwt: token}, status: :accepted
         else
-          render json: { message: user.errors.full_messages }, status: :unauthorized
+          render json: { message: ["An account has already been created with the email #{user.email}. Please login using your email."] }, status: :unauthorized
         end
     end
 
