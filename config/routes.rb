@@ -4,8 +4,7 @@ Rails.application.routes.draw do
   resources :comments
   resources :posts, only: [:index, :create, :update, :destroy]
   resources :users, only: [:index, :create, :update]
-  resources :images, only: [:index]
-
+  
   # Local Login
   namespace :api do 
     namespace :v1 do
@@ -14,11 +13,11 @@ Rails.application.routes.draw do
     end
   end
 
-  # Omniauth Login
+  
   # get '/omniauth/:provider/callback', to: 'sessions#omniauth'   #to be sued later
+    # Google OAuth2 login
   post 'omniauth/:provider/callback', to: 'sessions#omniauth_frontend'
   
-
   # root "posts#index"
   # get "/", to: 'posts#index'
   get '/profile', to: 'users#profile'
@@ -34,7 +33,7 @@ Rails.application.routes.draw do
   post '/draft', to:'posts#create'
   post '/publish', to:'posts#create'
   
-  
+  post '/images/schedule-for-destruction', to: 'images#schedule_for_destruction'
   # Prerender service routes
   # get '/static', to: 'sessions#omni'
   # get '*other', to: 'static#index'
