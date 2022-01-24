@@ -82,10 +82,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    # Temp code for fixing email verification
-    u = User.find_by_email("venid.sedientos01@gmail.com")
-    u.delete if u
-    # Temp code for fixing email verification
     if @user.update( bio: user_params[:bio] )      
       if @user.images[0] && user_params[:images_attributes].empty?
         # @user.images[0].destroy
