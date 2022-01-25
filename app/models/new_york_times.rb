@@ -3,7 +3,7 @@ class NewYorkTimes
     # base_uri "https://api.hubapi.com/content/api/v2"
     attr_accessor :key
   
-    def initialize(apikey = "#{ENV['NEW_YORK_TIMES_KEY']}" )
+    def initialize(apikey = "#{ENV['NEW_YORK_TIMES_KEY'] || 'dummy_key' }" )
       @key = apikey
     end
     

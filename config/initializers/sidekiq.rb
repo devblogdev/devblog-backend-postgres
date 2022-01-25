@@ -16,10 +16,10 @@
 # NEWEST LINES
 Sidekiq.configure_server do |config|
     # config.redis = { url: 'redis://redis.example.com:7372/0' }
-    config.redis = { url: ENV["REDIS_URL"] }
+    config.redis = { url: ENV["REDIS_URL"] || "redis://127.0.0.1" }
 end
   
 Sidekiq.configure_client do |config|
     # config.redis = { url: 'redis://redis.example.com:7372/0' }
-    config.redis = { url: ENV["REDIS_URL"] }
+    config.redis = { url: ENV["REDIS_URL"] || "redis://127.0.0.1" }
 end

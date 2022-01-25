@@ -10,7 +10,7 @@ class ImagesCleanupJob < ApplicationJob
                 request = Typhoeus::Request.new(
                     "https://api.imgur.com/3/image/#{deleteKeys[i]}", 
                     method: :delete,
-                    headers: { Authorization: "Bearer " + ENV['IMGUR_ACCESS_TOKEN'] }
+                    headers: { Authorization: "Bearer " + ENV['IMGUR_ACCESS_TOKEN'] || "dummy_key" }
                 )
                 hydra.queue(request)
                 request

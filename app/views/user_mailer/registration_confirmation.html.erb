@@ -4,4 +4,4 @@
 
 <p>Thanks for registering at DevBlog!!! To confirm your email, click on the below link:</p>
 
-<p><%= link_to "Activate Account", "#{ENV["FRONT_END_URL_CUSTOM_DOMAIN"]}/registration-confirmation/#{@user.confirm_token}" %></p>
+<p><%= link_to "Activate Account", "#{ ENV["FRONT_END_URL_CUSTOM_DOMAIN"] || 'localhost:8000' }/registration-confirmation/#{@user.confirm_token}" %></p>

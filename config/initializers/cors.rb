@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN']
+    origins ENV['FRONT_END_URL_NETLIFY_SUBDOMAIN'] || "localhost:8001"
 
     resource '*',
       headers: :any,
@@ -16,7 +16,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   end
 
   allow do
-    origins ENV['FRONT_END_URL_CUSTOM_DOMAIN']
+    origins ENV['FRONT_END_URL_CUSTOM_DOMAIN'] || "localhost:8000"
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
