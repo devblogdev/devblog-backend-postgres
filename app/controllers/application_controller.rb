@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
     # It is used in create action of auth_controller to create a jwt when a user logs in
     # The 'payload' argument is a has with 'user_id' as the key and the user id from the database as the value
     def encode_token(payload)
-        JWT.encode(payload, "secret")
+        JWT.encode(payload, 'secret', 'HS256')
     end
 
     def author_header        
@@ -18,8 +18,9 @@ class ApplicationController < ActionController::API
         if author_header
             token = author_header.split(" ")[1]
             begin 
-                JWT.decode(token, "secret", algorithm: 'H2S56')
+                JWT.decode(token, 'secret', algorithm: 'HS256')
             rescue JWT::DecodeError
+            # rescue JWT::ExpiredSignature
                 nil
             end
         end
