@@ -12,11 +12,12 @@ class SessionsController < ApplicationController
         user = User.from_omniauth(auth_frontend)
         if !user.provider.nil?
           token = encode_token({user_id: user.id})
-          # render json: { user: user, jwt: token}, status: :accepted
-          render json: { 
-            user: UserBlueprint.render(@user, view: :private),
-            jwt: token
-          }
+          render json: { user: user, jwt: token}, status: :accepted
+          # need to speicfy user google data; code throws
+          # render json: { 
+          #   user: UserBlueprint.render(@user, view: :private),
+          #   jwt: token
+          # }
         else
           render json: { message: ["An account has already been created with the email #{user.email}. Please login using your email."] }, status: :unauthorized
         end
