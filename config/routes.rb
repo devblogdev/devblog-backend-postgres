@@ -13,9 +13,8 @@ Rails.application.routes.draw do
     end
   end
 
-  
-  # get '/omniauth/:provider/callback', to: 'sessions#omniauth'   #to be sued later
-    # Google OAuth2 login
+  # Google OAuth2 login
+  post "/tokens", to: 'sessions#tokens'
   post 'omniauth/:provider/callback', to: 'sessions#omniauth_frontend'
   
   # root "posts#index"
@@ -35,6 +34,6 @@ Rails.application.routes.draw do
   
   post '/images/schedule-for-destruction', to: 'images#schedule_for_destruction'
   # Prerender service routes
-  # get '/static', to: 'sessions#omni'
+  get '/static', to: 'sessions#omni'
   # get '*other', to: 'static#index'
 end
