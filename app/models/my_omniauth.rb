@@ -1,26 +1,9 @@
 module MyOmniauth
-
-    def self.config 
-        {
-            google: "google_oauth2",
-            twitter: "twitter"
-        }
-    end
-
-    def self.google_oauth2_endpoints
-        {
-            tokens_endpoint: "https://oauth2.googleapis.com/token",
-            user_info_endpoint: "https://www.googleapis.com/oauth2/v2/userinfo", 
-            renew_access_token_endpoint: "",
-            revoke_tokens_endpoint: ""
-        }
-    end
-
-
+    
     class OmniauthRequest
-
         include HTTParty
         attr_accessor :provider, 
+                      :authorization_code_endpoint,
                       :tokens_endpoint, 
                       :user_info_endpoint, 
                       :renew_access_token_endpoint, 
@@ -30,15 +13,15 @@ module MyOmniauth
             MyOmniauth.config.each do |key, value|
                 key = key.to_s
                 if provider.include? key
-                    self.provider = value
+                    self.provider = value[:provider]
                     self.client_id = "#{ENV[(key.upcase + '_CLIENT_ID')]}"
                     self.client_secret = "#{ENV[(key.upcase + '_CLIENT_SECRET')]}"
+
+                    value[:endpoints].each do |k, v| 
+                        self.send "#{k}=", v
+                    end
                     break
                 end
-            end
-            provider_endpoints = (provider + "_endpoints").to_sym
-            MyOmniauth.send(provider_endpoints).each do |key, value|
-                self.send("#{key}=", value)
             end
         end
 
@@ -58,8 +41,44 @@ module MyOmniauth
         end
 
         private
+
         attr_accessor :client_id, :client_secret  
     end
+    
+    def self.config 
+        {
+            google: {
+                provider: "google_oauth2",
+                endpoints: {
+                    authorization_code_endpoint: "",
+                    tokens_endpoint: "https://oauth2.googleapis.com/token",
+                    user_info_endpoint: "https://www.googleapis.com/oauth2/v2/userinfo", 
+                    renew_access_token_endpoint: "",
+                    revoke_tokens_endpoint: ""
+                },
+                scopes: ["email", "profile", "openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+            },
+            twitter: {
+                provider: "twitter",
+                endpoints: {
+                    authorization_code_endpoint: "",
+                    tokens_endpoint: "",
+                    user_info_endpoint: "", 
+                    renew_access_token_endpoint: "",
+                    revoke_tokens_endpoint: ""
+                },
+                scopes: []
+            }
+        }
+    end
+
+    # Making a dmoule's class method private
+    # option 1: 
+    # private_class_method :config
+    # option 2:
+    # class << self
+    #     protected :config
+    # end
 
 
 end
