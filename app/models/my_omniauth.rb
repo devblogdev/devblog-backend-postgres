@@ -23,6 +23,16 @@ module MyOmniauth
             user_response = request_user_data(access_token)
             { tokens_data: tokens_response, user_data: user_response }
         end
+    
+        def renew_tokens(refresh_token)
+        end
+    
+        def revoke_tokens
+        end
+
+        private
+
+        attr_accessor :client_id, :client_secret  
 
         def request_tokens(code)
             options = {
@@ -46,16 +56,6 @@ module MyOmniauth
             uri = config[:endpoints][:user_data_endpoint]
             self.class.get(uri, options) 
         end
-    
-        def renew_tokens(refresh_token)
-        end
-    
-        def revoke_tokens
-        end
-
-        private
-
-        attr_accessor :client_id, :client_secret  
 
     end
     
