@@ -18,11 +18,23 @@ class SessionsController < ApplicationController
         end
     end
 
+    # def tokens
+    #   code = params['code']
+    #   begin
+    #     omni_client = OmniauthRequest.new(code, 'google')
+    #     tokens = omni_client.request_tokens     # One external API call
+    #     access_token = tokens['access_token']
+    #     user_data = omni_client.request_user_data(access_token)   # Another external API call
+    #     render json: { user: user_data }
+    #   rescue Exception => e
+    #     render json: { error:  e }
+    #   end
+    # end
     def tokens
       code = params['code']
       begin
-        omni_client = OmniauthRequest.new(code, 'google')
-        tokens = omni_client.request_tokens     # One external API call
+        omni_client = MyOmniauth::OmniauthRequest.new('google')
+        tokens = omni_client.request_tokens(code)     # One external API call
         access_token = tokens['access_token']
         user_data = omni_client.request_user_data(access_token)   # Another external API call
         render json: { user: user_data }

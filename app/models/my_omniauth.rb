@@ -2,36 +2,42 @@ module MyOmniauth
     
     class OmniauthRequest
         include HTTParty
-        attr_accessor :provider, 
-                      :authorization_code_endpoint,
-                      :tokens_endpoint, 
-                      :user_info_endpoint, 
-                      :renew_access_token_endpoint, 
-                      :revoke_tokens_endpoint
+        attr_accessor :config
 
         def initialize(provider)
             MyOmniauth.config.each do |key, value|
                 key = key.to_s
                 if provider.include? key
-                    self.provider = value[:provider]
+                    self.config = value
                     self.client_id = "#{ENV[(key.upcase + '_CLIENT_ID')]}"
                     self.client_secret = "#{ENV[(key.upcase + '_CLIENT_SECRET')]}"
-
-                    value[:endpoints].each do |k, v| 
-                        self.send "#{k}=", v
-                    end
+                    self.config[:redirect_uri] = "http://localhost:8000"
                     break
                 end
             end
         end
 
         def request_tokens(code)
-            self.class.post("https://oauth2.googleapis.com/token?#{@options[@provider.to_sym][:token_params]}", 
-            :headers => { "Content-type" => "application/x-www-form-urlencoded" }
-          )
+            options = {
+                query: {
+                    code: code,
+                    client_id: client_id,
+                    client_secret: client_secret,
+                    redirect_uri: config[:redirect_uri],
+                    grant_type: "authorization_code"
+                },
+                headers: { "Content-type" => "application/x-www-form-urlencoded" }
+            }    
+            uri = config[:endpoints][:tokens_endpoint] 
+            self.class.post(uri, options)
         end
     
         def request_user_data(access_token)
+            options = {
+                :headers => { "Authorization" => "Bearer #{access_token}" } 
+            }
+            uri = config[:endpoints][:user_data_endpoint]
+            self.class.get(uri, options) 
         end
     
         def renew_tokens(refresh_token)
@@ -43,6 +49,7 @@ module MyOmniauth
         private
 
         attr_accessor :client_id, :client_secret  
+
     end
     
     def self.config 
@@ -52,22 +59,24 @@ module MyOmniauth
                 endpoints: {
                     authorization_code_endpoint: "",
                     tokens_endpoint: "https://oauth2.googleapis.com/token",
-                    user_info_endpoint: "https://www.googleapis.com/oauth2/v2/userinfo", 
+                    user_data_endpoint: "https://www.googleapis.com/oauth2/v2/userinfo", 
                     renew_access_token_endpoint: "",
                     revoke_tokens_endpoint: ""
                 },
-                scopes: ["email", "profile", "openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+                scopes: ["email", "profile", "openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
+                redirect_uri: ""
             },
             twitter: {
                 provider: "twitter",
                 endpoints: {
                     authorization_code_endpoint: "",
                     tokens_endpoint: "",
-                    user_info_endpoint: "", 
+                    user_data_endpoint: "", 
                     renew_access_token_endpoint: "",
                     revoke_tokens_endpoint: ""
                 },
-                scopes: []
+                scopes: [],
+                redirect_uri: ""
             }
         }
     end
