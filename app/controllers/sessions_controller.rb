@@ -34,10 +34,8 @@ class SessionsController < ApplicationController
       code = params['code']
       begin
         omni_client = MyOmniauth::OmniauthRequest.new('google')
-        tokens = omni_client.request_tokens(code)     # One external API call
-        access_token = tokens['access_token']
-        user_data = omni_client.request_user_data(access_token)   # Another external API call
-        render json: { user: user_data }
+        auth_resposne = omni_client.retrieve_user_data(code)
+        render json: { user: auth_response[:user_data] }
       rescue Exception => e
         render json: { error:  e }
       end

@@ -17,6 +17,13 @@ module MyOmniauth
             end
         end
 
+        def retrieve_user_data(code)
+            tokens_response = request_tokens(code)
+            access_token = tokens_response["access_token"]
+            user_response = request_user_data(access_token)
+            { tokens_data: tokens_response, user_data: user_response }
+        end
+
         def request_tokens(code)
             options = {
                 query: {
