@@ -18,23 +18,45 @@ module MyOmniauth
         end
 
         def retrieve_user_data(code)
-            tokens_response = request_tokens(code)
+            tokens_response = request_token(code)
             access_token = tokens_response["access_token"]
             user_response = request_user_data(access_token)
             { tokens_data: tokens_response, user_data: user_response }
         end
     
-        def renew_tokens(refresh_token)
+        def renew_token(refresh_token)
+            options = {
+                query: {
+                    code: code,
+                    client_id: client_id,
+                    client_secret: client_secret,
+                    refresh_token: refresh_token,
+                    grant_type: "refresh_token"
+                },
+                headers: { "Content-type" => "application/x-www-form-urlencoded" }
+            }
+            uri = config[:endpoints][:renew_access_token_endpoint]
+            self.class.post(uri, options)
         end
     
-        def revoke_tokens
+        # Revokes an access token or a refresh token; if access token, its corresponding r
+        # refresh token is also revoked
+        def revoke_token(token)
+            options = {
+                query: {
+                    token: token
+                },
+                headers: { "Content-type" => "application/x-www-form-urlencoded" }
+            }
+            uri = config[:endpoints][:renew_access_token_endpoint]
+            self.class.post(uri, options)
         end
 
         private
 
         attr_accessor :client_id, :client_secret  
 
-        def request_tokens(code)
+        def request_token(code)
             options = {
                 query: {
                     code: code,
@@ -45,7 +67,7 @@ module MyOmniauth
                 },
                 headers: { "Content-type" => "application/x-www-form-urlencoded" }
             }    
-            uri = config[:endpoints][:tokens_endpoint] 
+            uri = config[:endpoints][:token_endpoint] 
             self.class.post(uri, options)
         end
     
@@ -58,17 +80,19 @@ module MyOmniauth
         end
 
     end
-    
+
+    # Module methods
+
     def self.config 
         {
             google: {
                 provider: "google_oauth2",
                 endpoints: {
                     authorization_code_endpoint: "",
-                    tokens_endpoint: "https://oauth2.googleapis.com/token",
+                    token_endpoint: "https://oauth2.googleapis.com/token",
                     user_data_endpoint: "https://www.googleapis.com/oauth2/v2/userinfo", 
-                    renew_access_token_endpoint: "",
-                    revoke_tokens_endpoint: ""
+                    renew_access_token_endpoint: "https://oauth2.googleapis.com/token",
+                    revoke_token_endpoint: "https://oauth2.googleapis.com/revoke"
                 },
                 scopes: ["email", "profile", "openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
                 redirect_uri: ""
@@ -77,10 +101,10 @@ module MyOmniauth
                 provider: "twitter",
                 endpoints: {
                     authorization_code_endpoint: "",
-                    tokens_endpoint: "",
+                    token_endpoint: "",
                     user_data_endpoint: "", 
                     renew_access_token_endpoint: "",
-                    revoke_tokens_endpoint: ""
+                    revoke_token_endpoint: ""
                 },
                 scopes: [],
                 redirect_uri: ""

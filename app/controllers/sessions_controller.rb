@@ -35,6 +35,7 @@ class SessionsController < ApplicationController
       begin
         omni_client = MyOmniauth::OmniauthRequest.new('google')
         auth_response = omni_client.retrieve_user_data(code)
+        puts auth_response
         render json: { user: auth_response[:user_data] }
       rescue Exception => e
         render json: { error: e }
