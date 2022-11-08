@@ -7,16 +7,26 @@ class SessionsController < ApplicationController
 
     def omniauth_frontend
         user = User.from_omniauth(auth_frontend)
+        # user = User.new
+        # @auth = request.env
         if !user.provider.nil?
           token = encode_token({user_id: user.id})
           render json: { 
             user: UserBlueprint.render(user, view: :private),
             jwt: token
           }
+          # render 'omni'
         else
           render json: { message: ["An account has already been created with the email #{user.email}. Please login using your email."] }, status: :unauthorized
+          # render 'omni'
         end
     end
+
+
+
+    # def omni
+    #   render 'omni'
+    # end
 
     # def tokens
     #   code = params['code']
@@ -30,17 +40,21 @@ class SessionsController < ApplicationController
     #     render json: { error:  e }
     #   end
     # end
-    def tokens
-      code = params['code']
-      begin
-        omni_client = MyOmniauth::OmniauthRequest.new('google')
-        auth_response = omni_client.retrieve_user_data(code)
-        puts auth_response
-        render json: { user: auth_response[:user_data] }
-      rescue Exception => e
-        render json: { error: e }
-      end
-    end
+
+
+
+    # Most recnet controller code for Hybrid Omniauth gem
+    # def tokens
+    #   code = params['code']
+    #   begin
+    #     omni_client = MyOmniauth::OmniauthRequest.new('google')
+    #     auth_response = omni_client.retrieve_user_data(code)
+    #     puts auth_response
+    #     render json: { user: auth_response[:user_data] }
+    #   rescue Exception => e
+    #     render json: { error: e }
+    #   end
+    # end
 
     private 
     def auth_frontend

@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/omni', to: 'sessions#omni'
+  get '/auth/:provider/callback', to: 'sessions#omniauth_frontend'
+
   # Google OAuth2 login
   post "/tokens", to: 'sessions#tokens'
   post 'omniauth/:provider/callback', to: 'sessions#omniauth_frontend'

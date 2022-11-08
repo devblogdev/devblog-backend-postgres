@@ -1,3 +1,4 @@
+# Module for Hybrid Omniauth gem
 module MyOmniauth
     
     class OmniauthRequest
@@ -18,9 +19,11 @@ module MyOmniauth
         end
 
         def retrieve_user_data(code)
-            tokens_response = request_token(code)
+            tokens_response = request_token("code")
+            # debugger
             access_token = tokens_response["access_token"]
             user_response = request_user_data(access_token)
+            # debugger
             { tokens_data: tokens_response, user_data: user_response }
         end
     
