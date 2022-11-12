@@ -67,6 +67,7 @@ Starting SideKiq:
 ```
 bundle exec sidekiq
 ```
+(This means you'll have three terminals: one running the Rails server, one running Redis, and one running SideKiq)
 
 If you go to `app/jobs` you'll see that DevBlog backend has three background jobs: two for users, and one for blog post images. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlog backend issues an email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane users in your database).
 
