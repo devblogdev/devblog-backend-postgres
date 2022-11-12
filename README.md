@@ -1,6 +1,6 @@
 # DevBlog Backend
 
-This is the RESTFul Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). Live website powered by this API: [DevBlog.dev](https://devblog.dev). This backend:
+This is the RESTful Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). Live website powered by this API: [DevBlog.dev](https://devblog.dev). This backend:
 
 * Stores DevBlog's blog posts, and performs CRUD actions for blog posts.
 * Stores json copies for the cover image of blog posts (original image are files stored in a AWS S3 bucket), and performs CRUD actions for cover images.
