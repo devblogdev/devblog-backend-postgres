@@ -81,14 +81,14 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
 
-  # CONFIGURATION IF USING PERSONAL EMAIL ACCOUNT
+  # Configuartion if using personal email account
   # config.action_mailer.delivery_method = :smtp
   # config.action_mailer.smtp_settings = {
   #   address:              'smtp.gmail.com',
   #   port:                 587,
   #   domain:               'example.com',
-  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],    Eliminate
-  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],    Eliminate
+  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],    your email username
+  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],    your email password
   #   authentication:       'plain',
   #   enable_starttls_auto: true 
   # }

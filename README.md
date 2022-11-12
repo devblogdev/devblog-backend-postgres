@@ -46,36 +46,37 @@ And start the server
 rails server
 ```
 
-## Services and Background Workers
+## Services 
+### Email Service
+To test the email service in development, go to config/environments/development.rb, comment out the code for "production code" found at the end of the file, and uncomment the code for "Configuration if using personal email account" in the same file. Add your email service username and password using environment variables in the uncommented code (preferrably use your gmail account username and password).
+
+If you have a SendGrid account with an API key, you can leave the production code from above and use your SendGrid API key instead. Note that you'll need to have a domain in SendGrid, which you'll add to the "domain" key in the code.
+
+This [post](https://dev.to/morinoko/sending-emails-in-rails-with-action-mailer-and-gmail-35g4) contains a full tutorial on how to setup emails on Rails and how to test sending emails and prevewing your emails right from Rails. 
+
+### Background Workders
+To run the background workers in development, you'll need to have Redis and Sidekiq installed. A background worker performs scheduled operations (background jobs) for immediate execution or for later execution. The Redis database stores the data for the job to be executed, while SideKiq performs the scheduled job.
+
+You'll then need to start the Redis server first, then the SideKiq worker, on two different terminals from the Rails project.
+
+Starting Redis:
+```
+redis-server
+```
+Starting SideKiq:
+```
+bundle exec sidekiq
+```
+
+If you go to app/jobs you'll see that DevBlog has three background jobs. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlock backend issues a email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane emails in your database).
 
 
 
-
-* System dependencies
+<!-- * System dependencies
 * Configuration
 * Database creation
 * Database initialization
 * How to run the test suite
 * Services (job queues, cache servers, search engines, etc.)
-* Deployment instructions
+* Deployment instructions -->
 
-* ...
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

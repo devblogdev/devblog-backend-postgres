@@ -1,6 +1,5 @@
-# Access hte preview at rails/mailers/usermailer/new_user
+# Access the preview at rails/mailers/user_mailer
 class UserMailerPreview < ActionMailer::Preview
-    # def new_user
     def registration_confirmation
         user = User.first
         UserMailer.registration_confirmation(user)
