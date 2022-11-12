@@ -10,9 +10,9 @@ This is the RESTFul Ruby on Rails backend API for [DevBlog Frontend](https://git
 * Authorizes requests for creating, editing, publishing or deleting draft posts
 * Authorizes request for creating, editing or deleting published posts
 * Authorizes requests for creating, editing, or deleting the cover image of blog posts
-* Manages DevBlog users session (logs users in; logs users out)
+* Manages DevBlog users' session (logs users in; logs users out)
 * Sends email verification links with expiration time via email for users creating an account in DevBlog with email and password
-* Sends password reset links with expiration time via email (for users who signed up via email and password) (utilizes SendGrid for sending email and a SideKick background worker for link expiration)
+* Sends password reset links with expiration time via email (for users who signed up via email and password) (utilizes SendGrid for sending email and a SideKiq background worker for link expiration)
 * Creates users who sign up to DevBlog via Google sign in
 * Authorizes all requests made by Google signed-in users
 * Performs CRUD actions for the profile information for users 
