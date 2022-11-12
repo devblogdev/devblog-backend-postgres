@@ -2,31 +2,20 @@ class SessionsController < ApplicationController
     # include AbstractController::Rendering
     # include ActionView::Layouts     # needed for rendering templates
     include ActionController::RequestForgeryProtection
-    # helper_method :activate
     skip_before_action :authorized
 
     def omniauth_frontend
         user = User.from_omniauth(auth_frontend)
-        # user = User.new
-        # @auth = request.env
         if !user.provider.nil?
           token = encode_token({user_id: user.id})
           render json: { 
             user: UserBlueprint.render(user, view: :private),
             jwt: token
           }
-          # render 'omni'
         else
           render json: { message: ["An account has already been created with the email #{user.email}. Please login using your email."] }, status: :unauthorized
-          # render 'omni'
         end
     end
-
-
-
-    # def omni
-    #   render 'omni'
-    # end
 
     # def tokens
     #   code = params['code']
@@ -41,9 +30,9 @@ class SessionsController < ApplicationController
     #   end
     # end
 
-
-
-    # Most recnet controller code for Hybrid Omniauth gem
+  # This code will be used at a later time as part of  
+  # releasing the Hybrid Omniauth gem for performing hybrid OAuth2 process 
+  # (client sends OAuth2 code from provider and server retrieves access and refresh tokens using the code)
     # def tokens
     #   code = params['code']
     #   begin

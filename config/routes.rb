@@ -17,8 +17,14 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback', to: 'sessions#omniauth_frontend'
 
   # Google OAuth2 login
-  post "/tokens", to: 'sessions#tokens'
+# This route does not uses the omniauth gem, it simply processes the info
+# sent to the route (currently DevBlog Frontend retrieves the user's OAuth2 Google info)
   post 'omniauth/:provider/callback', to: 'sessions#omniauth_frontend'
+# This will be a future route used for completing the Google OAuth2 process
+# server-side (client sends a Google access code, and server uses access code 
+# to retrieve user's Google profile; this way the server will be able to read the expiration time for the 
+# access token and refresh token provided by Google, and automatically refresh the tokens or logout user if tokens become invalid)
+  # post "/tokens", to: 'sessions#tokens'
   
   # root "posts#index"
   # get "/", to: 'posts#index'
