@@ -1,9 +1,9 @@
 # DevBlog Backend
 
-This is the RESTFul Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). This backend:
+This is the RESTFul Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend); live website powered by this API: [DevBlog.dev](https://devblog.dev). This backend:
 
 * Stores DevBlog's blog posts, and performs CRUD actions for blog posts.
-* Stores a json copy for the cover image of blog posts (original image files stored in a AWS S3 bucket), and performs CRUD actions for cover images.
+* Stores json copies for the cover image of blog posts (original image are files stored in a AWS S3 bucket), and performs CRUD actions for cover images.
 * Issues JWT tokens with expiration time for users logging in to DevBlog via email and password.
 * Authorizes users when users access their profile portal in DevBlog.
 (Side note: authorization means that the logged-in user credentials are verified first before performing any subsequent actions requested by the user through their DevBlog account)
@@ -48,16 +48,16 @@ rails server
 
 ## Services 
 ### Email Service
-To test the email service in development, go to config/environments/development.rb, comment out the code for "production code" found at the end of the file, and uncomment the code for "Configuration if using personal email account" in the same file. Add your email service username and password using environment variables in the uncommented code (preferrably use your gmail account username and password).
+To test the email service in development, go to `config/environments/development.rb`, comment out the code for "production code" found at the end of the file, and uncomment the code for "Configuration if using personal email account" in the same file. Add your email service username and password using environment variables in the uncommented code (preferrably use your gmail account username and password).
 
 If you have a SendGrid account with an API key, you can leave the production code from above and use your SendGrid API key instead. Note that you'll need to have a domain in SendGrid, which you'll add to the "domain" key in the code.
 
 This [post](https://dev.to/morinoko/sending-emails-in-rails-with-action-mailer-and-gmail-35g4) contains a full tutorial on how to setup emails on Rails and how to test sending emails and prevewing your emails right from Rails. 
 
 ### Background Workers
-To run the background workers in development, you'll need to have Redis and Sidekiq installed. A background worker performs scheduled operations (background jobs) for immediate execution or for later execution. The Redis database stores the data for the job to be executed, while SideKiq performs the scheduled job.
+To run the background workers in development, you'll need to have Redis and Sidekiq installed. A background worker performs scheduled operations (background jobs) for immediate execution or for later execution. The Redis database stores the data for the job to be executed, while SideKiq executes the scheduled job.
 
-You'll then need to start the Redis server first, then the SideKiq worker, on two different terminals from the Rails project.
+You'll then need to start the Redis server first, then the SideKiq worker, on two different terminals from this project:
 
 Starting Redis:
 ```
@@ -68,9 +68,10 @@ Starting SideKiq:
 bundle exec sidekiq
 ```
 
-If you go to app/jobs you'll see that DevBlog backend has three background jobs: two for users, and one for blog post images. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlog backend issues a email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane users emails in your database).
+If you go to `app/jobs` you'll see that DevBlog backend has three background jobs: two for users, and one for blog post images. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlog backend issues an email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane users in your database).
 
-
+## Database Seeding (dummy post objects and dummy user to start the API with)
+This is upcoming; hold tight.
 
 <!-- * System dependencies
 * Configuration
