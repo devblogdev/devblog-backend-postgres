@@ -2,22 +2,22 @@
 
 This is the RESTFul Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). This backend:
 
-* Stores DevBlog's blog posts, and performs CRUD actions for blog posts
-* Stores a json copy for the cover image of blog posts (original image files stored in a AWS S3 bucket), and performs CRUD actions for cover images
-* Issues JWT tokens with expiration time for users logging in to DevBlog via email and password
+* Stores DevBlog's blog posts, and performs CRUD actions for blog posts.
+* Stores a json copy for the cover image of blog posts (original image files stored in a AWS S3 bucket), and performs CRUD actions for cover images.
+* Issues JWT tokens with expiration time for users logging in to DevBlog via email and password.
 * Authorizes users when users access their profile portal in DevBlog.
 (Side note: authorization means that the logged-in user credentials are verified first before performing any subsequent actions requested by the user through their DevBlog account)
-* Authorizes requests for creating, editing, publishing or deleting draft posts
-* Authorizes request for creating, editing or deleting published posts
-* Authorizes requests for creating, editing, or deleting the cover image of blog posts
-* Manages DevBlog users' session (logs users in; logs users out)
-* Sends email verification links with expiration time via email for users creating an account in DevBlog with email and password
+* Authorizes requests for creating, editing, publishing or deleting draft posts.
+* Authorizes request for creating, editing or deleting published posts.
+* Authorizes requests for creating, editing, or deleting the cover image of blog posts.
+* Manages DevBlog users' session (logs users in; logs users out).
+* Sends email verification links with expiration time via email for users creating an account in DevBlog with email and password.
 * Sends password reset links with expiration time via email (for users who signed up via email and password) (utilizes SendGrid for sending email and a SideKiq background worker for link expiration)
-* Creates users who sign up to DevBlog via Google sign in
-* Authorizes all requests made by Google signed-in users
-* Performs CRUD actions for the profile information for users 
-* Performs CRUD actions for the profile image for users
-* Runs a SideKiq background worker to delete the unsaved images in the body of blog posts 
+* Creates users who sign up to DevBlog via Google sign in.
+* Authorizes all requests made by Google signed-in users.
+* Performs CRUD actions for the profile information for users.
+* Performs CRUD actions for the profile image for users.
+* Runs a SideKiq background worker to delete the unsaved images in the body of blog posts.
 
 In queue functionalities include
 * Performing CRUD actions for comments in blog posts
@@ -68,7 +68,7 @@ Starting SideKiq:
 bundle exec sidekiq
 ```
 
-If you go to app/jobs you'll see that DevBlog has three background jobs. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlock backend issues a email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane emails in your database).
+If you go to app/jobs you'll see that DevBlog has three background jobs. The users background jobs are scheduled in the users controller, while the images background job is scheduled in the images controller. As an example, and having Redis and Sidekiq running, if you create an account using DevBlog Frontend (in development), DevBlog backend issues a email verification link for the new user. If the user does not confirm the link in their email within 15 minutes, you'll see in your Sidekiq terminal right at 15 minutes that the user is automatically deleted. Nice, isn't it? (This prevents having orphane emails in your database).
 
 
 
