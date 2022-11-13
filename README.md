@@ -74,6 +74,7 @@ If you go to `app/jobs` you'll see that DevBlog backend has three background job
 ## Database Seeding (dummy post objects and dummy user to start the API with)
 This is upcoming; hold tight.
 
+
 <!-- * System dependencies
 * Configuration
 * Database creation
