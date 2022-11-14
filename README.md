@@ -1,7 +1,7 @@
 
 <h1>
+<img src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" data-canonical-src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" width="60" height="49" alt="DevBlog logo" />
 DevBlog Backend
-<img src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" data-canonical-src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" width="50" height="40" alt="DevBlog logo" />
 </h1>
 
 This is the RESTful Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). Live website powered by this API: [DevBlog.dev](https://devblog.dev). This backend:
