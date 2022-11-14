@@ -1,4 +1,5 @@
 # DevBlog Backend
+![alt text](https://user-images.githubusercontent.com/75151961/138567246-01b18138-9eb4-4d64-973b-7965083a26a8.png "DevBlog")
 
 This is the RESTful Ruby on Rails backend API for [DevBlog Frontend](https://github.com/mmartinezluis/devblog-frontend). Live website powered by this API: [DevBlog.dev](https://devblog.dev). This backend:
 
