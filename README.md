@@ -1,6 +1,6 @@
 
 <h1>
-<img src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" data-canonical-src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" width="60" height="49" alt="DevBlog logo" />
+<img src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" data-canonical-src="https://user-images.githubusercontent.com/75151961/142570132-d4ce33f1-6108-46c3-9681-f883b92a9dc3.png" width="70" height="57" alt="DevBlog logo" />
 DevBlog Backend
 </h1>
 
