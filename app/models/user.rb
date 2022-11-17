@@ -5,31 +5,56 @@ class User < ApplicationRecord
     has_many :images, foreign_key: "user_id", class_name: "UserImage", dependent: :destroy
     accepts_nested_attributes_for :images
 
-    validates :password, presence: true, on: :create, length: { minimum: 5, on: :create }
+    validates :password, presence: true, on: :create, length: { minimum: 6, on: :create }
     # Below line uses the 'valid_email2' gem
     validates :email, presence: true, 'valid_email_2/email': { mx: true, on: :create }
     validates :email, uniqueness: true, on: :create
 
+    # Validate the presence of first name and last name as they will be used in creating the user's posts url slug
+    validates :first_name, presence: true, on: :create
+    validates :last_name, presence: true, on: :create
+
     before_validation { self.email = email.downcase }
     # before_create :confirmation_token
 
-    
     scope :has_published_posts, -> { includes(:posts).joins(:posts).where("posts.status = ?", 1).order("posts.created_at desc") }
+
+    def self.create_with_username(params)
+        fullname = "#{params[:first_name]} #{params[:last_name]}"
+        username = UserManager::UsernameCreator.call(fullname)
+        user = User.new(params.merge(username: username))
+        user.confirmation_token
+        begin
+            user.save
+        rescue ActiveRecord::RecordNotUnique => e
+            # if user.errors.details[:username].any? { |h| h[:error] == :taken }
+            # Generate a new username until the username is unique 
+            return self.create_with_username(params)
+        end
+        user 
+    end
 
     def self.from_omniauth(auth_frontend)
         user = self.find_by(email: auth_frontend["email"])   
         # If the user regisered via normal sign up, confirmed email, and then tries to register via OAuth using the same email, skip the OAuth process
         unless user && user.email_confirmed && user.provider.nil?
             # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
-            user.delete if user && !user.email_confirmed        
-            user = self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
-                u.email = auth_frontend["email"]
-                u.first_name = auth_frontend['first_name']
-                u.last_name = auth_frontend['last_name']
-                u.password = SecureRandom.hex(20)
-                u.email_confirmed = true
+            user.delete if user && !user.email_confirmed     
+            fullname = "#{auth_frontend[:first_name]} #{auth_frontend[:last_name]}"
+            begin
+                user = self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
+                    u.email = auth_frontend["email"]
+                    u.first_name = auth_frontend['first_name']
+                    u.last_name = auth_frontend['last_name']
+                    u.password = SecureRandom.hex(20)
+                    u.email_confirmed = true
+                    u.username = UserManager::UsernameCreator.call(fullname)
+                end
+                user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
+            rescue ActiveRecord::RecordNotUnique => e
+                # Generate a new username until the username is unique 
+                return self.from_omniauth(auth_frontend)
             end
-            user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
         end
         user
     end

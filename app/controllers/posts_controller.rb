@@ -32,6 +32,7 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user_id = current_user.id
     @post.author_name = current_user.full_name
+    @post.build_slug if post_params[:status] == "published"
     if @post.save
       render json: PostBlueprint.render(@post, view: :extended)
     else
@@ -43,10 +44,14 @@ class PostsController < ApplicationController
   def update
     # Store the status of the post to change its creation time when it gets published
     status_before_update = @post.status
+    if @post.status == "draft" && post_params[:status] == "published"
+      @post.build_slug
+      @post.created_at = @post.updated_at
+    end
     # Update all fields except for the images attributes field
-    if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], url: post_params[:url], status: post_params[:status])
+    if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], status: post_params[:status])
       # If the post is a draft that is being published, update the creation time to equal the published (updated) time 
-      @post.update(created_at: @post.updated_at) if status_before_update == "draft" && post_params[:status] == "published"
+      # @post.update(created_at: @post.updated_at, url: @post.build_slug) if status_before_update == "draft" && post_params[:status] == "published"
       # There are 4 cases regarding the cover image for a post
       # Case 1: If the post has a cover image, and the paramss do not include an image, delete the post image
       if @post.images[0] && post_params[:images_attributes].empty?

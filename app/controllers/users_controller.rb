@@ -25,14 +25,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    @user.confirmation_token
-    if @user.save
-      UsersCleanupJob.set(wait: 15.minutes).perform_later(@user.email)
-      UserMailer.registration_confirmation(@user).deliver_now
-      render json: { email: @user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
+    user = User.create_with_username(user_params)
+    # @user = User.new(user_params)
+    # @user.confirmation_token
+    # if @user.save
+    if !user.errors.any?
+      # UsersCleanupJob.set(wait: 15.minutes).perform_later(user.email)
+      # UserMailer.registration_confirmation(user).deliver_now
+      render json: { email: user.email, message: ["Please confirm your email address to continue"] }, status: :accepted
     else
-      render json: { errors: @user.errors.full_messages }, status: :not_acceptable
+      render json: { errors: user.errors.full_messages }, status: :not_acceptable
     end
   end
 

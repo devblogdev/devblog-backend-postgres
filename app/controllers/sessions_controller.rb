@@ -12,6 +12,8 @@ class SessionsController < ApplicationController
             user: UserBlueprint.render(user, view: :private),
             jwt: token
           }
+        elsif user.errors.any?
+          render json: { errors: user.errors.full_messages }, status: :not_acceptable
         else
           render json: { message: ["An account has already been created with the email #{user.email}. Please login using your email."] }, status: :unauthorized
         end

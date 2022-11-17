@@ -23,10 +23,14 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+
 module DevblogBackend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+
+    # Allow autoloading of nested folders in /app
+    config.autoload_paths << Rails.root.join('app')
 
     # Activates ActiveJob for assynchronous tasks
     config.active_job.queue_adapter = :sidekiq

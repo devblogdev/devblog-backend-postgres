@@ -8,12 +8,21 @@ class Post < ApplicationRecord
   enum coming_from: [:database, :NYTIMES]
   enum status: [:draft, :published]
 
+  validates :title, presence: true, on: :create
+  validates :body, presence: true, on: :create
+  # url is the post slug
+  validates :url, uniqueness: true, :allow_nil => true
+
   def creation_time
     if self.coming_from == "database"
       self.created_at.strftime('%b %-d, %Y')
     else
       Date.today.strftime('%b %-d, %Y')
     end
+  end
+
+  def build_slug 
+    self.url = self.user.username + "/" + self.title.downcase.parameterize.gsub("_", "") + "-" + SecureRandom.hex(4)
   end
 
   def self.build_NYTIMES_post(post_hash)
