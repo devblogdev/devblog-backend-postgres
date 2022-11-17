@@ -1,6 +1,6 @@
 class UserBlueprint < Blueprinter::Base
     identifier :id
-    fields :first_name, :last_name, :bio
+    fields :first_name, :last_name, :username, :bio
 
     view :extended do
       # fields :first_name, :last_name, :bio
