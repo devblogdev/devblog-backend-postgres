@@ -22,7 +22,14 @@ class Post < ApplicationRecord
   end
 
   def build_slug 
-    self.url = self.user.username + "/" + self.title.downcase.parameterize.gsub("_", "") + "-" + SecureRandom.hex(4)
+    initial = self.title.downcase.parameterize.gsub("_", "")
+    initial_array = initial.split("-")
+    i = initial_array.length - 1
+    while initial.length > 95
+      i -= 1
+      initial = initial_array[0..i].join("-")
+    end
+    self.url = self.user.username + "/" + initial + "-" + SecureRandom.hex(5)
   end
 
   def self.build_NYTIMES_post(post_hash)

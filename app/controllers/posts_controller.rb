@@ -46,12 +46,11 @@ class PostsController < ApplicationController
     status_before_update = @post.status
     if @post.status == "draft" && post_params[:status] == "published"
       @post.build_slug
+      # If the post is a draft that is being published, update the creation time to equal the published (updated) time 
       @post.created_at = @post.updated_at
     end
     # Update all fields except for the images attributes field
     if @post.update(title: post_params[:title], body: post_params[:body], category: post_params[:category], abstract: post_params[:abstract], status: post_params[:status])
-      # If the post is a draft that is being published, update the creation time to equal the published (updated) time 
-      # @post.update(created_at: @post.updated_at, url: @post.build_slug) if status_before_update == "draft" && post_params[:status] == "published"
       # There are 4 cases regarding the cover image for a post
       # Case 1: If the post has a cover image, and the paramss do not include an image, delete the post image
       if @post.images[0] && post_params[:images_attributes].empty?
