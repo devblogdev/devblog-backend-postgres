@@ -50,11 +50,11 @@ class User < ApplicationRecord
                     u.email_confirmed = true
                     u.username = UserManager::UsernameCreator.call(fullname)
                 end
-                user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
             rescue ActiveRecord::RecordNotUnique => e
                 # Generate a new username until the username is unique 
                 return self.from_omniauth(auth_frontend)
             end
+            user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
         end
         user
     end
