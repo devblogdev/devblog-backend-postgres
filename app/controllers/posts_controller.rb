@@ -5,11 +5,11 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
-    begin      
+    # begin      
       new_york_times_posts = NewYorkTimes.new.section("world")
-    rescue 
-      render json: PostBlueprint.render(database_posts, view: :extended)
-    else
+    # rescue 
+      # render json: PostBlueprint.render(database_posts, view: :extended)
+    # else
       posts = database_posts + new_york_times_posts
       render json: PostBlueprint.render(posts, view: :extended)
     end
