@@ -1,22 +1,15 @@
-
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
   skip_before_action :authorized, only: [:index]
 
   # GET /posts
   def index
-    # database_posts = Post.where(status: :published).order(created_at: :desc)
-    # NEW LINES FOR IMPLEMENTING CACHING **********************
-    # Rails.cache.fetch([cache_key, __method__], expires_in: 30.minutes) do
     database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
-    # end
-    # NEW LINES FOR IMPLEMENTING CACHING ***********************
     begin      
-      new_york_times_posts = NewYorkTimes.new.section("world").take(25)
+      new_york_times_posts = NewYorkTimes.new.section("world")
     rescue 
       render json: PostBlueprint.render(database_posts, view: :extended)
     else
-      # byebug
       posts = database_posts + new_york_times_posts
       render json: PostBlueprint.render(posts, view: :extended)
     end

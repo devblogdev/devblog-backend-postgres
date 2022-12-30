@@ -54,6 +54,7 @@ Rails.application.configure do
 
 
   # # NEW LINES ********************
+  # config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
   # config.cache_store = :redis_store, {
   #   host: Rails.application.secrets.redis_server,
   #   port: Rails.application.secrets.redis_port,

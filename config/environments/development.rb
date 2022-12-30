@@ -9,13 +9,13 @@ Rails.application.configure do
   config.cache_classes = false
 
 
-    # # NEW LINES ************************************
-    # config.cache_store = :redis_store, {
-    # expires_in: 1.hour,
-    # namespace: 'cache',
-    # redis: { host: 'localhost', port: 6379, db: 0 },
-    # }
-    # # NEW LINES ************************************
+  # NEW LINES ************************************
+  config.cache_store = :redis_store, {
+    expires_in: 1.hour,
+    namespace: 'cache',
+    redis: { host: 'localhost', port: 6379, db: 1 },
+  }
+  # NEW LINES ************************************
     
 
   # Do not eager load code on boot.

@@ -8,9 +8,13 @@ class NewYorkTimes
     end
     
     def section(section)
-       response = self.class.get("https://api.nytimes.com/svc/topstories/v2/#{section}.json?api-key=#{self.key}")
-       data = response["results"]
-       construct_posts(data)
+      min_until_tomorrow = ((Date.tomorrow.to_time - Time.now)/60).to_i
+      expiration = 30 < min_until_tomorrow ? 30 : min_until_tomorrow
+      response = Rails.cache.fetch("nytimes_posts", expires_in: expiration.minutes) do
+          self.class.get("https://api.nytimes.com/svc/topstories/v2/#{section}.json?api-key=#{self.key}")
+      end
+      data = response["results"]
+      construct_posts(data).take(25)
     end
 
     def construct_posts(data)
