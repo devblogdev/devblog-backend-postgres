@@ -6,7 +6,8 @@ class PostsController < ApplicationController
   def index
     database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
     # begin      
-      new_york_times_posts = NewYorkTimes.new.section("world")
+      # new_york_times_posts = NewYorkTimes.new.section("world")
+      new_york_times_posts = Rails.cache.fetch("nytimes_posts")
     # rescue 
       # render json: PostBlueprint.render(database_posts, view: :extended)
     # else
