@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     # else
       posts = database_posts + new_york_times_posts
       render json: PostBlueprint.render(posts, view: :extended)
-    end
+    # end
   end
 
   # GET /posts/1
