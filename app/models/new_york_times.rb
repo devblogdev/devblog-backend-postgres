@@ -9,14 +9,13 @@ class NewYorkTimes
     
     def section(section)
       min_until_tomorrow = ((Date.tomorrow.to_time - Time.now)/60).to_i
-      expiration = 30 < min_until_tomorrow ? 30 : min_until_tomorrow
+      expiration = 60 < min_until_tomorrow ? 60 : min_until_tomorrow
       response = Rails.cache.fetch("nytimes_posts", expires_in: expiration.minutes) do
-          puts "I'm running in production"
+          puts "Caching block called"
           self.class.get("https://api.nytimes.com/svc/topstories/v2/#{section}.json?api-key=#{self.key}")
       end
-      puts "I always run"
       data = response["results"]
-      construct_posts(data).take(25)
+      construct_posts(data.take(25))
     end
 
     def construct_posts(data)
