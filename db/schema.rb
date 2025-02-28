@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_17_174459) do
-
+ActiveRecord::Schema[7.2].define(version: 2022_11_17_174459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,8 +18,8 @@ ActiveRecord::Schema.define(version: 2022_11_17_174459) do
     t.text "description"
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 2022_11_17_174459) do
     t.text "name"
     t.integer "size"
     t.text "s3key"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "post_id", null: false
     t.index ["post_id"], name: "index_images_on_post_id"
   end
@@ -48,8 +47,8 @@ ActiveRecord::Schema.define(version: 2022_11_17_174459) do
     t.text "url"
     t.integer "status", default: 0
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "author_name"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -63,8 +62,8 @@ ActiveRecord::Schema.define(version: 2022_11_17_174459) do
     t.integer "size"
     t.text "s3key"
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_images_on_user_id"
   end
 
@@ -74,8 +73,8 @@ ActiveRecord::Schema.define(version: 2022_11_17_174459) do
     t.text "first_name"
     t.text "last_name"
     t.jsonb "bio", default: "{}", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "private", default: "{}", null: false
     t.boolean "email_confirmed", default: false
     t.text "confirm_token"
