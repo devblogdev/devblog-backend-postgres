@@ -86,14 +86,14 @@ Rails.application.configure do
   # config.action_mailer.smtp_settings = {
   #   address:              'smtp.gmail.com',
   #   port:                 587,
-  #   domain:               'example.com',
-  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],    your email username
-  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],    your email password
+  #   domain:               'localhost',
+  #   user_name:            ENV["EMAIL_SERVICE_USERNAME"],    #your email username
+  #   password:             ENV["EMAIL_SERVICE_PASSWORD"],    #your email password
   #   authentication:       'plain',
   #   enable_starttls_auto: true 
   # }
 
-  # config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  # config.action_mailer.default_url_options = { host: 'localhost' }
   
 
     #  This the production code
