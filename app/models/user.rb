@@ -37,34 +37,23 @@ class User < ApplicationRecord
     def self.from_omniauth(user_data)
         user = self.find_by(email: user_data["email"])   
         # If the user regisered via normal sign up, confirmed email, and then tries to register via OAuth using the same email, skip the OAuth process
-        puts "Examine the log"
-        puts user_data.inspect
-        puts user.inspect
-        puts user, user&.email_confirmed, user&.provider
-        unless user && user.email_confirmed && user.provider.nil?
-            # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
-            user.delete if user && !user.email_confirmed     
-            fullname = user_data['name']
-            begin
-                user = self.find_or_create_by(provider: user_data["provider"], uid: user_data["sub"]) do |u|
-                    u.email = user_data["email"]
-                    u.first_name = user_data['given_name']
-                    u.last_name = user_data['family_name']
-                    u.password = SecureRandom.hex(20)
-                    u.email_confirmed = true
-                    u.username = UserManager::UsernameCreator.call(fullname)
-                end
-            rescue ActiveRecord::RecordNotUnique => e
-                # Generate a new username until the username is unique 
-                return self.from_omniauth(user_data)
-            rescue ActiveRecord::RecordInvalid
-                puts user.errors.full_messages
+        return user if user && user.email_confirmed
+        # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
+        user.delete if user && !user.email_confirmed     
+        fullname = user_data['name']
+        begin
+            user = self.find_or_create_by(provider: user_data["provider"], uid: user_data["sub"]) do |u|
+                u.email = user_data["email"]
+                u.first_name = user_data['given_name']
+                u.last_name = user_data['family_name']
+                u.password = SecureRandom.hex(20)
+                u.email_confirmed = true
+                u.username = UserManager::UsernameCreator.call(fullname)
             end
-            puts user.errors
-            puts user.changed?
-            puts user.inspect
-            user.images.create(url: user_data["picture"]) if user.images.blank? 
-        end
+        rescue ActiveRecord::RecordNotUnique => e
+            # Generate a new username until the username is unique 
+            return self.from_omniauth(user_data)
+        user.images.create(url: user_data["picture"]) if user.images.blank? 
         user
     end
     
