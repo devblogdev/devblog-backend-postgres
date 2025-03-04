@@ -34,27 +34,27 @@ class User < ApplicationRecord
         user 
     end
 
-    def self.from_omniauth(auth_frontend)
-        user = self.find_by(email: auth_frontend["email"])   
+    def self.from_omniauth(user_data)
+        user = self.find_by(email: user_data["email"])   
         # If the user regisered via normal sign up, confirmed email, and then tries to register via OAuth using the same email, skip the OAuth process
         unless user && user.email_confirmed && user.provider.nil?
             # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
             user.delete if user && !user.email_confirmed     
-            fullname = "#{auth_frontend[:first_name]} #{auth_frontend[:last_name]}"
+            fullname = user_data['name']
             begin
-                user = self.find_or_create_by(provider: auth_frontend["provider"], uid: auth_frontend["uid"]) do |u|
-                    u.email = auth_frontend["email"]
-                    u.first_name = auth_frontend['first_name']
-                    u.last_name = auth_frontend['last_name']
+                user = self.find_or_create_by(provider: user_data["provider"], uid: user_data["sub"]) do |u|
+                    u.email = user_data["email"]
+                    u.first_name = user_data['given_name']
+                    u.last_name = user_data['family_name']
                     u.password = SecureRandom.hex(20)
                     u.email_confirmed = true
                     u.username = UserManager::UsernameCreator.call(fullname)
                 end
             rescue ActiveRecord::RecordNotUnique => e
                 # Generate a new username until the username is unique 
-                return self.from_omniauth(auth_frontend)
+                return self.from_omniauth(user_data)
             end
-            user.images.create(url: auth_frontend["profile_image"]) if user.images.blank? 
+            user.images.create(url: user_data["picture"]) if user.images.blank? 
         end
         user
     end

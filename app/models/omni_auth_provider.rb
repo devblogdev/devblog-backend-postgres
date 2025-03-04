@@ -1,0 +1,1 @@
+class OmniAuthProvider < ApplicationRecord; end

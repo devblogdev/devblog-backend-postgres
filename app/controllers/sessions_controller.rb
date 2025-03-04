@@ -5,9 +5,17 @@ class SessionsController < ApplicationController
     skip_before_action :authorized
 
     def omniauth_frontend
-        user = User.from_omniauth(auth_frontend)
+        if params['provider'] == 'google'
+          data = GoogleOAuthManager::RetrieveUserData.call(auth_frontend)
+        end
+        if data.errors.any?
+          (render json: { message: data.errors }, status: :unauthorized) and return
+        end
+        user_data = data.user_data
+        user_data['provider'] = params['provider']
+        user = User.from_omniauth(user_data)
         if !user.provider.nil?
-          token = encode_token({user_id: user.id})
+          token = encode_token({user_id: user.id, exp: user_data['exp']})
           render json: { 
             user: UserBlueprint.render(user, view: :private),
             jwt: token
