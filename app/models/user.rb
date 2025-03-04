@@ -37,6 +37,10 @@ class User < ApplicationRecord
     def self.from_omniauth(user_data)
         user = self.find_by(email: user_data["email"])   
         # If the user regisered via normal sign up, confirmed email, and then tries to register via OAuth using the same email, skip the OAuth process
+        puts "Examine the log"
+        puts user_data.inspect
+        puts user.inspect
+        puts user, user&.email_confirmed, user&.provider
         unless user && user.email_confirmed && user.provider.nil?
             # This line prevents the user from confirming email via normal sign up if user creates account via OAth and then tries to confirm email via normal sign up
             user.delete if user && !user.email_confirmed     
@@ -53,7 +57,12 @@ class User < ApplicationRecord
             rescue ActiveRecord::RecordNotUnique => e
                 # Generate a new username until the username is unique 
                 return self.from_omniauth(user_data)
+            rescue ActiveRecord::RecordInvalid
+                puts user.errors.full_messages
             end
+            puts user.errors
+            puts user.changed?
+            puts user.inspect
             user.images.create(url: user_data["picture"]) if user.images.blank? 
         end
         user
