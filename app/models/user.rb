@@ -53,6 +53,7 @@ class User < ApplicationRecord
         rescue ActiveRecord::RecordNotUnique => e
             # Generate a new username until the username is unique 
             return self.from_omniauth(user_data)
+        end
         user.images.create(url: user_data["picture"]) if user.images.blank? 
         user
     end
