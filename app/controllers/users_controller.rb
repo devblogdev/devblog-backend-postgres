@@ -121,7 +121,7 @@ class UsersController < ApplicationController
       :confirm_token, 
       :bio => {}, 
       :private => {},
-      images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :id]
+      images_attributes: [:url, :caption, :alt, :format, :name, :size, :s3key, :imgur_delete_hash, :id]
     )
   end
 end
