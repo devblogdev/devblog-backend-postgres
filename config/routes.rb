@@ -2,7 +2,11 @@
 
 Rails.application.routes.draw do
   resources :comments
-  resources :posts, only: [:index, :create, :update, :destroy]
+  resources :posts, only: [:index, :create, :update, :destroy] do
+    collection do
+      get 'external'
+    end
+  end
   resources :users, only: [:index, :create, :update]
   
   # Local Login

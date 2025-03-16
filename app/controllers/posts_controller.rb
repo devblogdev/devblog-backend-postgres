@@ -1,17 +1,20 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
-  skip_before_action :authorized, only: [:index]
+  skip_before_action :authorized, only: [:index, :external]
 
   # GET /posts
   def index
     database_posts = Post.includes(:images).where(status: :published).order(created_at: :desc)
+    render json: PostBlueprint.render(database_posts, view: :extended)
+  end
+
+  def external
     begin      
       new_york_times_posts = NewYorkTimes.new.section("world")
     rescue 
-      render json: PostBlueprint.render(database_posts, view: :extended)
+      render json: { errors: ["Failed to fetch external posts."] }, status: :not_acceptable
     else
-      posts = database_posts + new_york_times_posts
-      render json: PostBlueprint.render(posts, view: :extended)
+      render json: PostBlueprint.render(new_york_times_posts, view: :extended)
     end
   end
 
